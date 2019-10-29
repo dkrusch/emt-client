@@ -6,7 +6,7 @@ import Login from "./auth/Login"
 // import ProductDetail from "./products/ProductDetail"
 // import ProductCategories from "./productcategories/ProductCategories"
 // import ProductCategory  from "./productcategories/ProductCategory"
-import HomePage from "./home/HomePage"
+import Store from "./store/Store"
 // import PaymentTypeForm from "./paymentmethod/PaymentTypeForm"
 // import ProductForm from "./products/ProductForm"
 // import PaymentTypes from "./paymentmethod/PaymentTypes"
@@ -49,8 +49,8 @@ const ApplicationViews = () => {
         <React.Fragment>
 
             <Route
-                exact path="/" render={props => {
-                    return <HomePage {...props} />
+                exact path="/mystore" render={props => {
+                    return <Store {...props} />
                 }}
             />
 

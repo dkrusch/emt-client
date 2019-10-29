@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
-// import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap/dist/css/bootstrap.min.css"
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
 
 // Author: Danny & Dustin (Changed elements of Nav)
@@ -12,33 +12,20 @@ const NavBar = props => {
     return (
         <nav className="navbar navbar-light light-blue flex-md-nowrap p-0 shadow">
             <ul className="nav nav-pills nav-fill">
-                <li className="nav-item">
-                    <Link className="nav-link" to="/">Home</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="/productcategories">Product Categories</Link>
-                </li>
-
 
                 {
                     isAuthenticated() ?
                     <>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/myProducts">My Products</Link>
+                            <Link className="nav-link" to="/mystore">My Store</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/profile">My Settings</Link>
+                            <Link className="nav-link" to="/storesettings">Store Settings</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" to="/reports">Reports</Link>
                         </li>
-                        <li className="nav-item">
-                        <Link className="nav-link" to="/favorites">Favorites</Link>
-                        </li>
 
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/cart">Cart</Link>
-                        </li>
                         <li className="nav-item">
                             <button className="nav-link fakeLink"
                                 onClick={() => {
