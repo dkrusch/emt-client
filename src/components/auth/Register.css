@@ -5,11 +5,6 @@
     padding-top: 5em;
 }
 
-.form--login > fieldset > input[type="email"],
-.form--login > fieldset > input[type="password"] {
-    width: 25em;
-}
-
 .form--login > fieldset > button[type="submit"] {
     margin: 1em 0em;
 }
