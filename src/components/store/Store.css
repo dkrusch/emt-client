@@ -4,6 +4,42 @@
   justify-content: flex-start
 }
 
+.store-page {
+  display: flex;
+  flex-direction: row;
+}
+
+/* .list-form {
+  flex-direction: column;
+} */
+
 .card {
   margin: 5px;
+}
+
+.progress {
+  width: 200px;
+  margin: 5px;
+}
+
+.incoming {
+  flex-direction: column;
+  /* margin: 5px; */
+}
+
+.dashboard {
+  width: 80%
+}
+
+.add-line {
+  width: 1px; /* Line width */
+  margin-right: 10px;
+  background: linear-gradient(to bottom, white, rgb(131, 131, 131), rgb(131, 131, 131), rgb(131, 131, 131));
+  height: auto; /* Override in-line if you want specific height. */
+  color: transparent;
+  float: left;
+}
+
+.order-column {
+  padding: 10px;
 }
