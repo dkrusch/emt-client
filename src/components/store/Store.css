@@ -53,3 +53,12 @@ html, body, #root {
   padding: 10px;
   margin: 10px;
 }
+
+.progress {
+  height: 20px;
+  width: 40%;
+}
+
+.progress-bar {
+  background: #85bb65;
+}

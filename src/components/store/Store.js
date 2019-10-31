@@ -58,9 +58,10 @@ const Store = props => {
       getCompleteOrders()
     }, [])
 
-    let vendPercent = 20
+    let vendPercent = 100
 
     let checkDate = new Date()
+    let earned = 0
     let vended = 0
 
     console.log("completeorders", completeOrders)
@@ -70,6 +71,8 @@ const Store = props => {
       if (checkDate.toISOString().substring(0, 10) === order.time_complete.substring(0, 10))
       {
         vended += order.vend_amount
+        vendPercent = vendPercent - (vendPercent * (vended / vendPercent))
+        earned += 1
       }
     })
 
@@ -80,7 +83,7 @@ const Store = props => {
     else {
       component = orders.map(order => {
         {console.log("order", order)}
-        return <IncomingOrders order={order} key={order.id} getOpenOrders={getOpenOrders} id={order.id}></IncomingOrders>
+        return <IncomingOrders order={order} key={order.id} getOpenOrders={getOpenOrders} getCompleteOrders={getCompleteOrders} id={order.id}></IncomingOrders>
       })
     }
 
@@ -94,6 +97,7 @@ const Store = props => {
               </div>
               <h4>Vend limit ${setting.vend_limit}</h4>
               <h4>Amount Vended ${vended}</h4>
+              <h4>Amount Earned ${earned}</h4>
             </div>
             <div className="add-line"></div>
             {console.log("orders", orders)}

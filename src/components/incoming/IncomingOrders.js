@@ -20,6 +20,7 @@ const IncomingOrders = props => {
           })
         })
         .then(() => props.getOpenOrders())
+        .then(() => props.getCompleteOrders())
     }
 
     console.log("key", props.id)
@@ -30,6 +31,7 @@ const IncomingOrders = props => {
           <section className="incoming-orders">
             <div>{props.order.customer.full_name}</div>
             <div>{props.order.vend_amount}</div>
+            <div>In ${props.order.denomination} bills</div>
             <button type="submit" onClick={() => completeOrder()}>Complete Order</button>
           </section>
       </>
