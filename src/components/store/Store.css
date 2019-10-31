@@ -1,3 +1,10 @@
+html, body, #root {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+
 .homePage-Div {
   display: flex;
   flex-flow: row wrap;
@@ -7,6 +14,7 @@
 .store-page {
   display: flex;
   flex-direction: row;
+  height: 92.3vh;
 }
 
 /* .list-form {
@@ -28,18 +36,20 @@
 }
 
 .dashboard {
-  width: 80%
+  width: 80%;
+  margin: 10px;
 }
 
 .add-line {
   width: 1px; /* Line width */
   margin-right: 10px;
-  background: linear-gradient(to bottom, white, rgb(131, 131, 131), rgb(131, 131, 131), rgb(131, 131, 131));
-  height: auto; /* Override in-line if you want specific height. */
+  background: rgb(131, 131, 131);
+  height: 100%; /* Override in-line if you want specific height. */
   color: transparent;
   float: left;
 }
 
 .order-column {
   padding: 10px;
+  margin: 10px;
 }

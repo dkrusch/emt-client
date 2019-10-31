@@ -6,44 +6,31 @@ import "bootstrap/dist/css/bootstrap.min.css"
 // import IncomingOrders from "./incoming/IncomingOrders"
 
 const IncomingOrders = props => {
-    const [incomingOrders, setOrders] = useState([])
-    const {isAuthenticated} = useSimpleAuth()
-    // const searchTerm = useRef()
-
-    const getOrders = () => {
-        fetch(`http://192.168.20.138:8000/orders`, {
-            "method": "GET",
-            "headers": {
-              "Accept": "application/json",
-              "Content-Type": "application/json",
-              "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
-            }
+    // useEffect(getOrders, [])
+    const completeOrder = () => {
+        fetch(`http://192.168.20.138:8000/orders/${props.id}`, {
+          "method": "PUT",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+          },
+          "body": JSON.stringify({
+            "time_complete": new Date().toISOString()
+          })
         })
-        .then(response => response.json())
-        .then(setOrders)
-      }
+        .then(() => props.getOpenOrders())
+    }
 
-
-    useEffect(getOrders, [])
-
+    console.log("key", props.id)
+    console.log("date", new Date().toISOString())
     let thing = 20
     return(
       <>
           <section className="incoming-orders">
-              <ul className="order-column">
-              {
-                incomingOrders.map(order => {
-                  {console.log("byeeee", order)}
-                  return (
-                    <div key={order.id}>
-                        <h4>{order.customer.full_name}</h4>
-                        <h4>${order.vend_amount}</h4>
-                        <hr></hr>
-                    </div>
-                  )
-                })
-              }
-              </ul>
+            <div>{props.order.customer.full_name}</div>
+            <div>{props.order.vend_amount}</div>
+            <button type="submit" onClick={() => completeOrder()}>Complete Order</button>
           </section>
       </>
     )
