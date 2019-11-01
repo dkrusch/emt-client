@@ -42,6 +42,10 @@ const StoreProfile = props => {
     console.log("what setting be", setting)
 
     const changeSettings = () => {
+        if (startTime.current.value > endTime.current.value) {
+            alert("The start time should not be after the end time.")
+            return true
+        }
         fetch(`http://192.168.20.138:8000/stores/${setting.id}`, {
             "method": "PUT",
             "headers": {
@@ -59,6 +63,10 @@ const StoreProfile = props => {
       }
 
     const limit = (val, max, money) => {
+        if (val.length === 1) {
+            val = val + '0';
+        }
+
         if (val.length === 1 && val[0] > max[0]) {
             val = '0' + val;
         }
