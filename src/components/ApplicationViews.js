@@ -3,36 +3,15 @@ import React, { useEffect, useState } from "react"
 import { withRouter, Redirect } from "react-router-dom"
 import Register from "./auth/Register"
 import Login from "./auth/Login"
-// import ProductDetail from "./products/ProductDetail"
-// import ProductCategories from "./productcategories/ProductCategories"
-// import ProductCategory  from "./productcategories/ProductCategory"
 import Store from "./store/Store"
-// import PaymentTypeForm from "./paymentmethod/PaymentTypeForm"
-// import ProductForm from "./products/ProductForm"
-// import PaymentTypes from "./paymentmethod/PaymentTypes"
-// import CardOrder from "./cart/CartOrder"
-// import MyProfile from "./profile/MyProfile"
-// import OrderHistory from "./profile/OrderHistory"
-// import OrderDetail from "./profile/OrderDetail"
-// import MyProducts from "./products/MyProducts"
-// import MyProfileEditForm from "./profile/MyProfileEditForm"
-// import Favorites from "./favorites/favorites"
-// import CompleteOrder from "./cart/CompleteOrder"
-// import IncompleteOrders from "./reports/IncompleteOrders"
-// import Reports from "./reports/Reports"
+import StoreProfile from "./store-profile/StoreProfile"
 import useSimpleAuth from "../hooks/ui/useSimpleAuth"
 
 
 
 const ApplicationViews = () => {
     // Fetches all products and categories to be used in product categories and product details pages
-    const [products, setProducts] = useState([])
-    const [categories, setCategories] = useState([])
-    const [orders, setOrders] = useState([])
-    const [completeOrders, setCompleteOrders] = useState([])
     const { isAuthenticated } = useSimpleAuth()
-    const [myRatings, setMyRatings] = useState([])
-    const [recommendations, setRecommendations] = useState([])
 
 
 
@@ -51,6 +30,12 @@ const ApplicationViews = () => {
             <Route
                 exact path="/mystore" render={props => {
                     return <Store {...props} />
+                }}
+            />
+
+            <Route
+                exact path="/storesettings" render={props => {
+                    return <StoreProfile {...props} />
                 }}
             />
 

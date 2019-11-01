@@ -63,6 +63,7 @@ const Store = props => {
     let checkDate = new Date()
     let earned = 0
     let vended = 0
+    let completedOrders = 0
 
     console.log("completeorders", completeOrders)
 
@@ -73,6 +74,7 @@ const Store = props => {
         vended += order.vend_amount
         vendPercent = vendPercent - (vendPercent * (vended / vendPercent))
         earned += 1
+        completedOrders += 1
       }
     })
 
@@ -102,6 +104,7 @@ const Store = props => {
             <div className="add-line"></div>
             {console.log("orders", orders)}
             <div className="incoming">
+              <h4>Complete Orders: {completedOrders}</h4>
               {
                 component
               }
