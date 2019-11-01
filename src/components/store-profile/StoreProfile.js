@@ -58,14 +58,14 @@ const StoreProfile = props => {
         .then(() => getSettings())
       }
 
-    const hourLimit = (val, max) => {
+    const limit = (val, max, money) => {
         if (val.length === 1 && val[0] > max[0]) {
             val = '0' + val;
         }
 
         if (val.length === 2) {
             if (Number(val) === 0) {
-            val = '01';
+            val = '00';
 
             //this can happen when user paste number
         } else if (val > max) {
@@ -73,28 +73,40 @@ const StoreProfile = props => {
             }
         }
 
-        return val;
-    }
-
-    const secLimit = (val, max) => {
-        if (val.length === 1 && val[0] > max[0]) {
-            val = '0' + val;
+        if (money === true) {
+            if (val.length === 3) {
+                if (Number(val) === 0) {
+                    val = '001';
+                }
+            }
         }
-
-        else if (val > max) {
-            val = max;
-        }
-
 
         return val;
     }
 
-    const timeMax = (val) => {
-        let hour = hourLimit(val.substring(0, 2), '24')
-        let min = secLimit(val.substring(2, 4), '60')
-        let sec = secLimit(val.substring(4, 6), '60')
+    const starttimeMax = (val) => {
+        let hour = limit(val.substring(0, 2), '24')
+        let min = limit(val.substring(2, 4), '60')
+        let sec = limit(val.substring(4, 6), '60')
 
+        startTime.current.value = hour + ":" + min + ":" + sec
         return hour + ":" + min + ":" + sec
+    }
+
+    const endtimeMax = (val) => {
+        let hour = limit(val.substring(0, 2), '24')
+        let min = limit(val.substring(2, 4), '60')
+        let sec = limit(val.substring(4, 6), '60')
+
+        endTime.current.value = hour + ":" + min + ":" + sec
+        return hour + ":" + min + ":" + sec
+    }
+
+    const moneyMax = (val) => {
+        let money = limit(val.substring(0, 3), '999', true)
+
+        vendLimit.current.value = "$" + money
+        return "$" + money
     }
 
     return(
@@ -114,7 +126,7 @@ const StoreProfile = props => {
                     <NumberFormat ref={startTime}
                         name="startTime"
                         className="form-control"
-                        placeholder={setting.start_time} format={timeMax} mask="_"/>
+                        placeholder={setting.start_time} format={starttimeMax} mask="_"/>
                 </fieldset>
                   <h4>----</h4>
                 <fieldset>
@@ -122,12 +134,12 @@ const StoreProfile = props => {
                     <NumberFormat ref={endTime}
                         name="endTime"
                         className="form-control"
-                        placeholder={setting.end_time} format="##:##:##" mask="_"/>
+                        placeholder={setting.end_time} format={endtimeMax} mask="_"/>
                 </fieldset>
               </div>
               <h4>Vend Limit:</h4>
               <div className="vend-amount">
-                <NumberFormat placeholder={"$" + setting.vend_limit} ref={vendLimit} thousandSeparator={true} prefix={'$'} />
+                <NumberFormat placeholder={"$" + setting.vend_limit} ref={vendLimit} thousandSeparator={true} format={moneyMax} />
               </div>
               <button className="change-settings" onClick={changeSettings}>Submit Changes</button>
             </div>
