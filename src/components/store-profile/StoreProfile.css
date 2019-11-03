@@ -11,7 +11,7 @@ html, body, #root {
   justify-content: flex-start
 }
 
-.store-page {
+.store-profile {
   display: flex;
   flex-direction: row;
   height: 92.3vh;
@@ -35,7 +35,7 @@ html, body, #root {
   /* margin: 5px; */
 }
 
-.dashboard {
+.edit-form {
   width: 80%;
   margin: 10px;
   border: 1px

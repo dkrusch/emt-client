@@ -3,7 +3,7 @@ import "./StoreProfile.css"
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
 import { valueToNode } from "@babel/types"
 import "bootstrap/dist/css/bootstrap.min.css"
-import IncomingOrders from "../incoming/IncomingOrders"
+import OrderHistory from "../order-history/OrderHistory"
 import NumberFormat from 'react-number-format';
 
 
@@ -17,7 +17,7 @@ const StoreProfile = props => {
     // const searchTerm = useRef()
 
     const getSettings = () => {
-      fetch(`http://192.168.20.138:8000/stores?merchant=${localStorage.getItem("id")}`, {
+      fetch(`http://192.168.1.4:8000/stores?merchant=${localStorage.getItem("id")}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -34,10 +34,25 @@ const StoreProfile = props => {
       })
     }
 
+    const getCompleteOrders = () => {
+        fetch(`http://192.168.1.4:8000/orders?merchant=1&complete=1`, {
+            "method": "GET",
+            "headers": {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+            }
+        })
+        .then(response => response.json())
+        .then(setCompleteOrders)
+    }
+
 
     useEffect(() => {
-      getSettings()
+    getSettings()
+    getCompleteOrders()
     }, [])
+
 
     console.log("what setting be", setting)
 
@@ -46,7 +61,7 @@ const StoreProfile = props => {
             alert("The start time should not be after the end time.")
             return true
         }
-        fetch(`http://192.168.20.138:8000/stores/${setting.id}`, {
+        fetch(`http://192.168.1.4:8000/stores/${setting.id}`, {
             "method": "PUT",
             "headers": {
               "Accept": "application/json",
@@ -117,6 +132,24 @@ const StoreProfile = props => {
         return "$" + money
     }
 
+    let completedOrders = 0
+
+    console.log("completeorders", completeOrders)
+
+    completeOrders.map(order => {
+        completedOrders += 1
+    })
+
+    let component = []
+    if (completeOrders.length === 0) {
+      component = <h2>Your Store Has No Order History</h2>
+    }
+    else {
+      component = completeOrders.map(order => {
+        return <OrderHistory order={order} key={order.id}></OrderHistory>
+      })
+    }
+
     return(
       <>
           <section className="store-profile">
@@ -150,6 +183,13 @@ const StoreProfile = props => {
                 <NumberFormat placeholder={"$" + setting.vend_limit} ref={vendLimit} thousandSeparator={true} format={moneyMax} />
               </div>
               <button className="change-settings" onClick={changeSettings}>Submit Changes</button>
+            </div>
+            <div className="add-line"></div>
+            <div className="incoming">
+              <h4>Complete Orders: {completedOrders}</h4>
+              {
+                component
+              }
             </div>
           </section>
       </>
