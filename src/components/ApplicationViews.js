@@ -4,6 +4,8 @@ import { withRouter, Redirect } from "react-router-dom"
 import Register from "./auth/Register"
 import Login from "./auth/Login"
 import Store from "./store/Store"
+import Stores from "./stores/Stores"
+import CreateOrder from "./create-order/CreateOrder"
 import StoreProfile from "./store-profile/StoreProfile"
 import useSimpleAuth from "../hooks/ui/useSimpleAuth"
 
@@ -36,6 +38,18 @@ const ApplicationViews = () => {
             <Route
                 exact path="/storesettings" render={props => {
                     return <StoreProfile {...props} />
+                }}
+            />
+
+            <Route
+                exact path="/stores" render={props => {
+                    return <Stores {...props} />
+                }}
+            />
+
+<Route
+                exact path="/createorder" render={props => {
+                    return <CreateOrder {...props} />
                 }}
             />
 

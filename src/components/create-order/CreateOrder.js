@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react"
-import "./StoreProfile.css"
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
 import { valueToNode } from "@babel/types"
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -7,7 +6,7 @@ import OrderHistory from "../order-history/OrderHistory"
 import NumberFormat from 'react-number-format';
 
 
-const StoreProfile = props => {
+const CreateOrder = props => {
     const [setting, setSettings] = useState({})
     const startTime = useRef()
     const endTime = useRef()
@@ -184,16 +183,9 @@ const StoreProfile = props => {
               </div>
               <button className="change-settings" onClick={changeSettings}>Submit Changes</button>
             </div>
-            <div className="add-line"></div>
-            <div className="incoming">
-              <h4>Complete Orders: {completedOrders}</h4>
-              {
-                component
-              }
-            </div>
           </section>
       </>
     )
   }
 
-export default StoreProfile
+export default CreateOrder
