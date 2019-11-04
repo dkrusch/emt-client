@@ -9,7 +9,7 @@ import { Link } from "react-router-dom"
 const StoreLink = props => {
     // useEffect(getOrders, [])
     // const createOrder = () => {
-    //     fetch(`http://192.168.1.4:8000/orders`, {
+    //     fetch(`http://192.168.21.117:8000/orders`, {
     //         "method": "POST",
     //         "headers": {
     //             "Accept": "application/json",
@@ -41,7 +41,9 @@ const StoreLink = props => {
           <section className="incoming-orders">
             <div>{props.store.store_name}</div>
             <div>{address}</div>
-            <Link className="nav-link nav-color" to="/createorder"><button type="submit">Create Order</button></Link>
+            <Link className="nav-link nav-color" to={`/createorder/${props.store.id}`}>
+                <button type="submit">Create Order</button>
+            </Link>
             <hr></hr>
           </section>
       </>

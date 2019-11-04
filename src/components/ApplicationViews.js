@@ -12,19 +12,25 @@ import useSimpleAuth from "../hooks/ui/useSimpleAuth"
 
 
 const ApplicationViews = () => {
-    // Fetches all products and categories to be used in product categories and product details pages
-    const { isAuthenticated } = useSimpleAuth()
+    const [stores, setStores] = useState([])
+    const {isAuthenticated} = useSimpleAuth()
 
+    const getStores = () => {
+      fetch(`http://192.168.21.117:8000/stores`, {
+          "method": "GET",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+          }
+      })
+      .then(response => response.json())
+      .then(setStores)
+    }
 
-
-    // Runs both fetches in sequence when application starts
-    // useEffect(() => {
-    //     getProducts()
-    //     getCategories()
-    //     getOrders()
-    //     getCompleteOrders()
-    //     getRecommendations()
-    // }, [])
+    useEffect(() => {
+        getStores()
+    }, [])
 
     return (
         <React.Fragment>
@@ -47,9 +53,13 @@ const ApplicationViews = () => {
                 }}
             />
 
-<Route
-                exact path="/createorder" render={props => {
-                    return <CreateOrder {...props} />
+            <Route
+                exact path="/createorder/:storeId(\d+)" render={props => {
+                    let store = stores.find(store => store.id === +props.match.params.storeId)
+
+                    if (store) {
+                        return <CreateOrder {...props} store={store} />
+                    }
                 }}
             />
 
