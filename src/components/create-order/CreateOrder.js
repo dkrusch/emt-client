@@ -27,7 +27,6 @@ const CreateOrder = props => {
       })
       .then(response => response.json())
       .then(response => {
-          console.log("snee", response)
           setSettings(response)
           orderAmount.current.value = response.vend_limit
       })
@@ -58,10 +57,8 @@ const CreateOrder = props => {
     let vended = 0
     let completedOrders = 0
 
-    console.log("completeorders", completeOrders)
 
     completeOrders.map(order => {
-      console.log("hello", checkDate.toISOString().substring(0, 10), order.time_complete.substring(0, 10))
       if (checkDate.toISOString().substring(0, 10) === order.time_complete.substring(0, 10))
       {
         vended += order.vend_amount
@@ -71,7 +68,6 @@ const CreateOrder = props => {
       }
     })
 
-    console.log("what setting be", setting)
 
     const limit = (val, max, money) => {
         if (val.length === 1) {
@@ -108,7 +104,6 @@ const CreateOrder = props => {
     }
 
     const moneyMax = (val) => {
-      console.log("vendamount", vendAmount)
         let money = limit(val.substring(0, 3), vendAmount, true)
 
         orderAmount.current.value = money
@@ -164,12 +159,10 @@ const CreateOrder = props => {
       {
         if (orderAmount.current.value > 0)
         {
-          console.log("value", denomValue)
           createOrder()
         }
         else
         {
-          console.log(orderAmount)
           alert("Please enter a valid order amount.")
         }
       }
