@@ -16,7 +16,7 @@ const ApplicationViews = () => {
     const {isAuthenticated} = useSimpleAuth()
 
     const getStores = () => {
-      fetch(`http://192.168.21.117:8000/stores`, {
+      fetch(`http://192.168.1.4:8000/stores`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",

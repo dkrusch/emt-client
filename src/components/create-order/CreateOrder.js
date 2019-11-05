@@ -15,8 +15,8 @@ const CreateOrder = props => {
     const {isAuthenticated} = useSimpleAuth()
     // const searchTerm = useRef()
 
-    const getSettings = () => {
-      fetch(`http://192.168.21.117:8000/stores?merchant=${localStorage.getItem("id")}`, {
+    const getStores = () => {
+      fetch(`http://192.168.1.4:8000/stores/${props.store.id}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -26,16 +26,51 @@ const CreateOrder = props => {
       })
       .then(response => response.json())
       .then(response => {
-          setSettings(response[0])
-          orderAmount.current.value = response[0].vend_limit
+          console.log("snee", response)
+          setSettings(response)
+          orderAmount.current.value = response.vend_limit
       })
     }
 
 
+    const getCompleteOrders = () => {
+      fetch(`http://192.168.1.4:8000/orders?merchant=1&complete=1`, {
+          "method": "GET",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+          }
+      })
+      .then(response => response.json())
+      .then(setCompleteOrders)
+    }
 
     useEffect(() => {
-    getSettings()
+      getStores()
+      getCompleteOrders()
     }, [])
+
+    let vendAmount = props.store.vend_limit
+
+    let checkDate = new Date()
+    let earned = 0
+    let vended = 0
+    let completedOrders = 0
+
+    console.log("completeorders", completeOrders)
+
+    completeOrders.map(order => {
+      console.log("hello", checkDate.toISOString().substring(0, 10), order.time_complete.substring(0, 10))
+      if (checkDate.toISOString().substring(0, 10) === order.time_complete.substring(0, 10))
+      {
+        vended += order.vend_amount
+        vendAmount = vendAmount - vended
+        earned += 1
+        completedOrders += 1
+      }
+    })
+
 
 
     console.log("what setting be", setting)
@@ -77,14 +112,30 @@ const CreateOrder = props => {
         return "$" + money
     }
 
+    const createLocal = () => {
+      console.log(checkDate.toISOString().substring(11, 19))
+      let basicTime = parseInt(checkDate.toISOString().substring(11, 19)) + 6
+      if (basicTime > 24)
+      {
+        basicTime = basicTime - 24
+      }
+      return basicTime
+    }
 
+    const checkTime = () => {
+      let uniTime = checkDate.toISOString().substring(11, 19)
+      let localTime = createLocal()
+      localTime = localTime.toString()
+      if (localTime.length === 1)
+      {
+        localTime = "0" + localTime
+      }
+      console.log(localTime.length)
+      console.log("is it time", localTime + uniTime.substring(2), props.store.end_time)
+    }
 
-
-    console.log("orderamount", orderAmount.current !== undefined)
     const checkValue = () => {
-      console.log(orderAmount.current.value >= 1)
       if (orderAmount.current !== undefined && orderAmount.current.value >= 1) {
-        console.log("hello person", orderAmount.current, orderAmount.current.value)
         setDenom(<option value="1">1</option>)
         if (orderAmount.current.value >= 5) {
           setDenom(
@@ -109,7 +160,8 @@ const CreateOrder = props => {
       <>
           <section className="store-profile">
             <div className="edit-form">
-              <h1>{props.store.store_name} Profile</h1>
+              <h1>Place Order at {props.store.store_name}</h1>
+              <h2>Amount Available: {vendAmount}</h2>
               <h4>Order Amount:</h4>
               <div className="vend-amount">
                 <NumberFormat placeholder="$000" onChange={checkValue} ref={orderAmount} className="form-vend" thousandSeparator={true} format={moneyMax} />
@@ -122,7 +174,7 @@ const CreateOrder = props => {
                     {denom}
                   </select>
               </div>
-              <button className="change-settings">Create Order</button>
+              <button className="change-settings" onClick={checkTime}>Create Order</button>
             </div>
           </section>
       </>
