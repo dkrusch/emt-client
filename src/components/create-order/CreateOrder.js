@@ -10,13 +10,14 @@ import NumberFormat from 'react-number-format';
 const CreateOrder = props => {
     const [setting, setSettings] = useState({})
     const [denom, setDenom] = useState("")
+    const [denomValue, setDenomValue] = useState("")
     const orderAmount = useRef()
     const [completeOrders, setCompleteOrders] = useState([])
     const {isAuthenticated} = useSimpleAuth()
     // const searchTerm = useRef()
 
     const getStores = () => {
-      fetch(`http://192.168.1.4:8000/stores/${props.store.id}`, {
+      fetch(`http://192.168.21.117:8000/stores/${props.store.id}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -32,9 +33,8 @@ const CreateOrder = props => {
       })
     }
 
-
     const getCompleteOrders = () => {
-      fetch(`http://192.168.1.4:8000/orders?merchant=1&complete=1`, {
+      fetch(`http://192.168.21.117:8000/orders?merchant=1&complete=1`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -71,8 +71,6 @@ const CreateOrder = props => {
       }
     })
 
-
-
     console.log("what setting be", setting)
 
     const limit = (val, max, money) => {
@@ -84,7 +82,7 @@ const CreateOrder = props => {
             val = '0' + val;
         }
 
-        if (val.length === 2) {
+        if (val.length === 2 && val[1] > max[1]) {
             if (Number(val) === 0) {
             val = '00';
 
@@ -94,44 +92,87 @@ const CreateOrder = props => {
             }
         }
 
-        if (money === true) {
-            if (val.length === 3) {
-                if (Number(val) === 0) {
-                    val = '001';
-                }
-            }
+        if (val > max) {
+          val = max;
         }
+
+        // if (money === true) {
+        //     if (val.length === 3) {
+        //         if (Number(val) === 0) {
+        //             val = '001';
+        //         }
+        //     }
+        // }
 
         return val;
     }
 
     const moneyMax = (val) => {
-        let money = limit(val.substring(0, 3), '999', true)
+      console.log("vendamount", vendAmount)
+        let money = limit(val.substring(0, 3), vendAmount, true)
 
         orderAmount.current.value = money
         return "$" + money
     }
 
-    const createLocal = () => {
-      console.log(checkDate.toISOString().substring(11, 19))
-      let basicTime = parseInt(checkDate.toISOString().substring(11, 19)) + 6
-      if (basicTime > 24)
+    const createOrder = (denomin) => {
+      fetch(`http://192.168.21.117:8000/orders`, {
+          "method": "POST",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+          },
+          "body": JSON.stringify({
+            store_id: props.store.id,
+            payment_type: 2,
+            customer_id: localStorage.getItem("id"),
+            vend_amount: parseInt(orderAmount.current.value),
+            created_date: new Date().toISOString(),
+            denomination: parseInt(denomValue)
+          })
+      })
+      .then(response => response.json())
+      .then(() => getCompleteOrders())
+    }
+
+    const createLocal = (newDate) => {
+      let basicTime = parseInt(newDate.toISOString().substring(11, 19)) - 6
+      if (basicTime < 0)
       {
-        basicTime = basicTime - 24
+        basicTime = basicTime + 24
       }
       return basicTime
     }
 
     const checkTime = () => {
+      let newDate = new Date()
       let uniTime = checkDate.toISOString().substring(11, 19)
-      let localTime = createLocal()
+      let localTime = createLocal(newDate)
+
       localTime = localTime.toString()
       if (localTime.length === 1)
       {
         localTime = "0" + localTime
       }
-      console.log(localTime.length)
-      console.log("is it time", localTime + uniTime.substring(2), props.store.end_time)
+
+      if ((localTime + uniTime.substring(2)) > props.store.end_time || (localTime + uniTime.substring(2)) < props.store.start_time)
+      {
+        alert("Sorry, this store is no longer taking orders.")
+      }
+      else
+      {
+        if (orderAmount.current.value > 0)
+        {
+          console.log("value", denomValue)
+          createOrder()
+        }
+        else
+        {
+          console.log(orderAmount)
+          alert("Please enter a valid order amount.")
+        }
+      }
     }
 
     const checkValue = () => {
@@ -155,6 +196,9 @@ const CreateOrder = props => {
       }
     }
 
+    const handleChange = (event) => {
+      setDenomValue(event.target.value)
+    }
 
     return(
       <>
@@ -169,7 +213,7 @@ const CreateOrder = props => {
               <h4>Vend Time Range:</h4>
               <div className="time-range">
                   <label htmlFor="denomination"> Order Denomination </label>
-                  <select name="denomination" className="dropdown">
+                  <select name="denomination" className="dropdown" value={denomValue} onChange={e => handleChange(e)}>
                     <option value="select-domination">Select Denomination</option>
                     {denom}
                   </select>
