@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 const IncomingOrders = props => {
     // useEffect(getOrders, [])
     const completeOrder = () => {
-        fetch(`http://192.168.20.138:8000/orders/${props.id}`, {
+        fetch(`http://192.168.21.117:8000/orders/${props.id}`, {
           "method": "PUT",
           "headers": {
             "Accept": "application/json",
@@ -30,7 +30,7 @@ const IncomingOrders = props => {
       <>
           <section className="incoming-orders">
             <div>{props.order.customer.full_name}</div>
-            <div>{props.order.vend_amount}</div>
+            <div>${props.order.vend_amount}</div>
             <div>In ${props.order.denomination} bills</div>
             <button type="submit" onClick={() => completeOrder()}>Complete Order</button>
           </section>

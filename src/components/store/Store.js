@@ -13,7 +13,7 @@ const Store = props => {
     // const searchTerm = useRef()
 
     const getSettings = () => {
-      fetch(`http://192.168.20.138:8000/stores?merchant=${localStorage.getItem("id")}`, {
+      fetch(`http://192.168.21.117:8000/stores?merchant=${localStorage.getItem("id")}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -26,7 +26,7 @@ const Store = props => {
     }
 
     const getOpenOrders = () => {
-      fetch(`http://192.168.20.138:8000/orders?$merchant=${localStorage.getItem("id")}&complete=0`, {
+      fetch(`http://192.168.21.117:8000/orders?merchant=${localStorage.getItem("id")}&complete=0`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -39,7 +39,8 @@ const Store = props => {
     }
 
     const getCompleteOrders = () => {
-      fetch(`http://192.168.20.138:8000/orders?merchant=1&complete=1`, {
+      console.log("BE CALLED")
+      fetch(`http://192.168.21.117:8000/orders?merchant=${localStorage.getItem("id")}&complete=1`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -58,21 +59,25 @@ const Store = props => {
       getCompleteOrders()
     }, [])
 
+    let vendLimit = setting.vend_limit
     let vendPercent = 100
-
-    let checkDate = new Date()
     let earned = 0
     let vended = 0
+    let completedOrders = 0
 
     console.log("completeorders", completeOrders)
 
     completeOrders.map(order => {
-      console.log("hello", checkDate.toISOString().substring(0, 10), order.time_complete.substring(0, 10))
+      let checkDate = new Date()
+      console.log("hello currentdate", checkDate.toISOString().substring(0, 10), "orderdate", order.time_complete.substring(0, 10))
       if (checkDate.toISOString().substring(0, 10) === order.time_complete.substring(0, 10))
       {
         vended += order.vend_amount
-        vendPercent = vendPercent - (vendPercent * (vended / vendPercent))
+        console.log("vendPERCENT", vendPercent)
+        console.log(vended, vendLimit, vended / vendLimit)
+        vendPercent = 100 - (100 * (vended / vendLimit))
         earned += 1
+        completedOrders += 1
       }
     })
 
@@ -91,7 +96,7 @@ const Store = props => {
       <>
           <section className="store-page">
             <div className="dashboard">
-              <h1>{console.log("bye", setting)}{setting.store_name} Dashboard</h1>
+              <h1>{setting.store_name} Dashboard</h1>
               <div className="progress">
                 <div className="progress-bar" role="progressbar" style={{width: vendPercent + "%"}}></div>
               </div>
@@ -102,6 +107,7 @@ const Store = props => {
             <div className="add-line"></div>
             {console.log("orders", orders)}
             <div className="incoming">
+              <h4>Complete Orders: {completedOrders}</h4>
               {
                 component
               }
