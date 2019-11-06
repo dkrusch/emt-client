@@ -21,7 +21,7 @@ const ApplicationViews = () => {
     const [paymentlist, setPaymentList] = useState([])
 
     const getPaymentList = () => {
-      fetch(`http://192.168.1.4:8000/payments?customer=${localStorage.getItem("id")}`, {
+      fetch(`http://192.168.21.117:8000/payments?customer=${localStorage.getItem("id")}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -36,7 +36,7 @@ const ApplicationViews = () => {
     }
 
     const getStores = () => {
-      fetch(`http://192.168.1.4:8000/stores`, {
+      fetch(`http://192.168.21.117:8000/stores`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -49,7 +49,7 @@ const ApplicationViews = () => {
     }
 
     const getPayments = () => {
-        fetch(`http://192.168.1.4:8000/payments`, {
+        fetch(`http://192.168.21.117:8000/payments`, {
             "method": "GET",
             "headers": {
               "Accept": "application/json",

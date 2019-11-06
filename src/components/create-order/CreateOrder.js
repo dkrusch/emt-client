@@ -12,13 +12,14 @@ const CreateOrder = props => {
     const [paymentList, setPaymentList] = useState([])
     const [denom, setDenom] = useState("")
     const [denomValue, setDenomValue] = useState("")
+    const [paymentValue, setPaymentValue] = useState("")
     const orderAmount = useRef()
     const [completeOrders, setCompleteOrders] = useState([])
     const {isAuthenticated} = useSimpleAuth()
     // const searchTerm = useRef()
 
     const getStores = () => {
-      fetch(`http://192.168.1.4:8000/stores/${props.store.id}`, {
+      fetch(`http://192.168.21.117:8000/stores/${props.store.id}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -34,7 +35,7 @@ const CreateOrder = props => {
     }
 
     const getCompleteOrders = () => {
-      fetch(`http://192.168.1.4:8000/orders?merchant=1&complete=1`, {
+      fetch(`http://192.168.21.117:8000/orders?merchant=1&complete=1`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -47,7 +48,7 @@ const CreateOrder = props => {
     }
 
     const getPaymentList = () => {
-      fetch(`http://192.168.1.4:8000/payments?customer=${localStorage.getItem("id")}`, {
+      fetch(`http://192.168.21.117:8000/payments?customer=${localStorage.getItem("id")}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -128,7 +129,7 @@ const CreateOrder = props => {
     }
 
     const createOrder = (denomin) => {
-      fetch(`http://192.168.1.4:8000/orders`, {
+      fetch(`http://192.168.21.117:8000/orders`, {
           "method": "POST",
           "headers": {
             "Accept": "application/json",
@@ -137,7 +138,7 @@ const CreateOrder = props => {
           },
           "body": JSON.stringify({
             store_id: props.store.id,
-            payment_type: 2,
+            payment_type: parseInt(paymentValue),
             customer_id: localStorage.getItem("id"),
             vend_amount: parseInt(orderAmount.current.value),
             created_date: new Date().toISOString(),
@@ -146,6 +147,23 @@ const CreateOrder = props => {
       })
       .then(response => response.json())
       .then(() => getCompleteOrders())
+    }
+
+    const checkOrder = () => {
+      console.log(denomValue)
+      if (denomValue === "select-denomination")
+      {
+        alert ("Please select a valid denomination")
+        return
+      }
+      if (paymentValue === "" || paymentValue === "select")
+      {
+        alert ("Please select a valid payment option")
+      }
+      else
+      {
+        createOrder()
+      }
     }
 
     const createLocal = (newDate) => {
@@ -176,7 +194,7 @@ const CreateOrder = props => {
       {
         if (orderAmount.current.value > 0)
         {
-          createOrder()
+          checkOrder()
         }
         else
         {
@@ -210,6 +228,10 @@ const CreateOrder = props => {
       setDenomValue(event.target.value)
     }
 
+    const handlePayment = (event) => {
+      setPaymentValue(event.target.value)
+    }
+
     return(
       <>
           <section className="store-profile">
@@ -224,15 +246,17 @@ const CreateOrder = props => {
               <div className="denomination">
                   <label htmlFor="denomination"> Order Denomination </label>
                   <select name="denomination" className="dropdown" value={denomValue} onChange={e => handleChange(e)}>
-                    <option value="select-domination">Select Denomination</option>
+                    <option value="select-denomination">Select Denomination</option>
                     {denom}
                   </select>
               </div>
               <div className="payment">
                   <label htmlFor="denomination"> Payment </label>
-                  <select name="denomination" className="dropdown" value={denomValue} onChange={e => handleChange(e)}>
+                  <select name="denomination" className="dropdown" value={paymentValue} onChange={e => handlePayment(e)}>
+                    <option value="select">Select Payment</option>
                     {
                       paymentList.map(payment => {
+                        console.log("PAY", payment)
                         return <option value={payment.id}>... {payment.account_number.substring(14)}</option>
                       })
                     }

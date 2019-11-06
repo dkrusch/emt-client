@@ -9,7 +9,7 @@ import { Link } from "react-router-dom"
 const StoreLink = props => {
     // useEffect(getOrders, [])
     // const createOrder = () => {
-    //     fetch(`http://192.168.1.4:8000/orders`, {
+    //     fetch(`http://192.168.21.117:8000/orders`, {
     //         "method": "POST",
     //         "headers": {
     //             "Accept": "application/json",
