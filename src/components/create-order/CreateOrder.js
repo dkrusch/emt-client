@@ -17,7 +17,7 @@ const CreateOrder = props => {
     // const searchTerm = useRef()
 
     const getStores = () => {
-      fetch(`http://192.168.21.117:8000/stores/${props.store.id}`, {
+      fetch(`http://192.168.1.4:8000/stores/${props.store.id}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -33,7 +33,7 @@ const CreateOrder = props => {
     }
 
     const getCompleteOrders = () => {
-      fetch(`http://192.168.21.117:8000/orders?merchant=1&complete=1`, {
+      fetch(`http://192.168.1.4:8000/orders?merchant=1&complete=1`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -111,7 +111,7 @@ const CreateOrder = props => {
     }
 
     const createOrder = (denomin) => {
-      fetch(`http://192.168.21.117:8000/orders`, {
+      fetch(`http://192.168.1.4:8000/orders`, {
           "method": "POST",
           "headers": {
             "Accept": "application/json",

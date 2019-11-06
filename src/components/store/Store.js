@@ -13,7 +13,7 @@ const Store = props => {
     // const searchTerm = useRef()
 
     const getSettings = () => {
-      fetch(`http://192.168.21.117:8000/stores?merchant=${localStorage.getItem("id")}`, {
+      fetch(`http://192.168.1.4:8000/stores?merchant=${localStorage.getItem("id")}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -26,7 +26,7 @@ const Store = props => {
     }
 
     const getOpenOrders = () => {
-      fetch(`http://192.168.21.117:8000/orders?merchant=${localStorage.getItem("id")}&complete=0`, {
+      fetch(`http://192.168.1.4:8000/orders?merchant=${localStorage.getItem("id")}&complete=0`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -40,7 +40,7 @@ const Store = props => {
 
     const getCompleteOrders = () => {
       console.log("BE CALLED")
-      fetch(`http://192.168.21.117:8000/orders?merchant=${localStorage.getItem("id")}&complete=1`, {
+      fetch(`http://192.168.1.4:8000/orders?merchant=${localStorage.getItem("id")}&complete=1`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",

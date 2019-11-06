@@ -10,7 +10,7 @@ const useSimpleAuth = () => {
         loggedIn || localStorage.getItem("bangazon_token") !== null
 
     const register = userInfo => {
-        return fetch("http://192.168.21.117:8000/register", {
+        return fetch("http://192.168.1.4:8000/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -29,7 +29,7 @@ const useSimpleAuth = () => {
     }
 
     const login = credentials => {
-        return fetch("http://192.168.21.117:8000/login", {
+        return fetch("http://192.168.1.4:8000/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

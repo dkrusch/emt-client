@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 const IncomingOrders = props => {
     // useEffect(getOrders, [])
     const completeOrder = () => {
-        fetch(`http://192.168.21.117:8000/orders/${props.id}`, {
+        fetch(`http://192.168.1.4:8000/orders/${props.id}`, {
           "method": "PUT",
           "headers": {
             "Accept": "application/json",

@@ -19,11 +19,17 @@ const NavBar = props => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/mystore">My Store</Link>
                         </li>
+
                         <li className="nav-item">
                             <Link className="nav-link" to="/storesettings">Store Settings</Link>
                         </li>
+
                         <li className="nav-item">
                             <Link className="nav-link" to="/stores">Stores</Link>
+                        </li>
+
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/payment">Payment Settings</Link>
                         </li>
 
                         <li className="nav-item">
@@ -37,6 +43,7 @@ const NavBar = props => {
                                 }
                             >Logout</button>
                         </li>
+
                         </> :
                         <>
                         <li className="nav-item">

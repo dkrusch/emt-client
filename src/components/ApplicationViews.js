@@ -5,6 +5,7 @@ import Register from "./auth/Register"
 import Login from "./auth/Login"
 import Store from "./store/Store"
 import Stores from "./stores/Stores"
+import Payment from "./payment/Payment"
 import CreateOrder from "./create-order/CreateOrder"
 import StoreProfile from "./store-profile/StoreProfile"
 import useSimpleAuth from "../hooks/ui/useSimpleAuth"
@@ -16,7 +17,7 @@ const ApplicationViews = () => {
     const {isAuthenticated} = useSimpleAuth()
 
     const getStores = () => {
-      fetch(`http://192.168.21.117:8000/stores`, {
+      fetch(`http://192.168.1.4:8000/stores`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -50,6 +51,12 @@ const ApplicationViews = () => {
             <Route
                 exact path="/stores" render={props => {
                     return <Stores {...props} />
+                }}
+            />
+
+            <Route
+                exact path="/payment" render={props => {
+                    return <Payment {...props} />
                 }}
             />
 
