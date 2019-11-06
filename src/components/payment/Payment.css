@@ -1,0 +1,15 @@
+.add-payment {
+  /* display: flex; */
+}
+
+.add-form {
+  flex-direction: column;
+}
+
+.payment-extra {
+  display: inline;
+}
+
+.payment-important {
+  display: inline;
+}

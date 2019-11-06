@@ -9,8 +9,10 @@ import NumberFormat from 'react-number-format';
 
 const CreateOrder = props => {
     const [setting, setSettings] = useState({})
+    const [paymentList, setPaymentList] = useState([])
     const [denom, setDenom] = useState("")
     const [denomValue, setDenomValue] = useState("")
+    const [paymentValue, setPaymentValue] = useState("")
     const orderAmount = useRef()
     const [completeOrders, setCompleteOrders] = useState([])
     const {isAuthenticated} = useSimpleAuth()
@@ -45,9 +47,25 @@ const CreateOrder = props => {
       .then(setCompleteOrders)
     }
 
+    const getPaymentList = () => {
+      fetch(`http://192.168.21.117:8000/payments?customer=${localStorage.getItem("id")}`, {
+          "method": "GET",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+          }
+      })
+      .then(response => response.json())
+      .then(response => {
+          setPaymentList(response)
+      })
+    }
+
     useEffect(() => {
       getStores()
       getCompleteOrders()
+      getPaymentList()
     }, [])
 
     let vendAmount = props.store.vend_limit
@@ -120,7 +138,7 @@ const CreateOrder = props => {
           },
           "body": JSON.stringify({
             store_id: props.store.id,
-            payment_type: 2,
+            payment_type: parseInt(paymentValue),
             customer_id: localStorage.getItem("id"),
             vend_amount: parseInt(orderAmount.current.value),
             created_date: new Date().toISOString(),
@@ -129,6 +147,23 @@ const CreateOrder = props => {
       })
       .then(response => response.json())
       .then(() => getCompleteOrders())
+    }
+
+    const checkOrder = () => {
+      console.log(denomValue)
+      if (denomValue === "select-denomination")
+      {
+        alert ("Please select a valid denomination")
+        return
+      }
+      if (paymentValue === "" || paymentValue === "select")
+      {
+        alert ("Please select a valid payment option")
+      }
+      else
+      {
+        createOrder()
+      }
     }
 
     const createLocal = (newDate) => {
@@ -159,7 +194,7 @@ const CreateOrder = props => {
       {
         if (orderAmount.current.value > 0)
         {
-          createOrder()
+          checkOrder()
         }
         else
         {
@@ -193,6 +228,10 @@ const CreateOrder = props => {
       setDenomValue(event.target.value)
     }
 
+    const handlePayment = (event) => {
+      setPaymentValue(event.target.value)
+    }
+
     return(
       <>
           <section className="store-profile">
@@ -204,11 +243,23 @@ const CreateOrder = props => {
                 <NumberFormat placeholder="$000" onChange={checkValue} ref={orderAmount} className="form-vend" thousandSeparator={true} format={moneyMax} />
               </div>
               <h4>Vend Time Range:</h4>
-              <div className="time-range">
+              <div className="denomination">
                   <label htmlFor="denomination"> Order Denomination </label>
                   <select name="denomination" className="dropdown" value={denomValue} onChange={e => handleChange(e)}>
-                    <option value="select-domination">Select Denomination</option>
+                    <option value="select-denomination">Select Denomination</option>
                     {denom}
+                  </select>
+              </div>
+              <div className="payment">
+                  <label htmlFor="denomination"> Payment </label>
+                  <select name="denomination" className="dropdown" value={paymentValue} onChange={e => handlePayment(e)}>
+                    <option value="select">Select Payment</option>
+                    {
+                      paymentList.map(payment => {
+                        console.log("PAY", payment)
+                        return <option value={payment.id}>... {payment.account_number.substring(14)}</option>
+                      })
+                    }
                   </select>
               </div>
               <button className="change-settings" onClick={checkTime}>Create Order</button>

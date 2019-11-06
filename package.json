@@ -7,13 +7,17 @@
     "datetime": "0.0.3",
     "moment": "^2.24.0",
     "react": "^16.11.0",
+    "react-credit-card-input": "^1.1.5",
     "react-datetime": "^2.16.3",
     "react-dom": "^16.11.0",
     "react-moment": "^0.9.6",
     "react-number-format": "^4.3.1",
+    "react-payment": "^0.1.8",
     "react-router-dom": "^5.1.2",
     "react-router-link": "^2.0.2",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "stripe": "^7.11.0",
+    "styled-components": "^4.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
