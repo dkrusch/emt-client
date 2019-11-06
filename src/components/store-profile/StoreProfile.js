@@ -35,7 +35,7 @@ const StoreProfile = props => {
     }
 
     const getCompleteOrders = () => {
-        fetch(`http://192.168.21.117:8000/orders?merchant=1&complete=1`, {
+        fetch(`http://192.168.21.117:8000/orders?merchant=${localStorage.getItem("id")}&complete=1`, {
             "method": "GET",
             "headers": {
                 "Accept": "application/json",

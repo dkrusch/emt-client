@@ -64,7 +64,7 @@ const RegisterMerchant = props => {
         register(newUser).then(() => {
             registerStore()
             props.history.push({
-                pathname: "/store"
+                pathname: "/mystore"
             })
         })
     }

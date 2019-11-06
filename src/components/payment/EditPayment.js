@@ -15,7 +15,8 @@ const EditPayment = props => {
     const CVC = useRef()
 
     const setValues = () => {
-        console.log("set values", payment)
+        console.log("payment", payment)
+        console.log("set values", payment.merchant_name)
         setMerchant(payment.merchant_name)
         zipCode.current.value = payment.zip_code
         cardNumber.current.value = payment.account_number
@@ -34,7 +35,8 @@ const EditPayment = props => {
         })
         .then(response => response.json())
         .then(response => {
-            setPayments(response, setValues())
+            setPayments(response)
+            setValues()
         })
     }
 
@@ -45,29 +47,31 @@ const EditPayment = props => {
 
 
     const formatDate = (date) => {
+        console.log("date", date)
         let splitDate = date.split("/")
         return "20" + splitDate[1] + "-" + splitDate[0] + "-01"
     }
 
     const addPayment = () => {
-      fetch(`http://192.168.21.117:8000/payments/${payment.id}`, {
-          "method": "PUT",
-          "headers": {
+        console.log(merchantName)
+        fetch(`http://192.168.21.117:8000/payments/${payment.id}`, {
+            "method": "PUT",
+            "headers": {
             "Accept": "application/json",
             "Content-Type": "application/json",
             "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
-          },
-          "body": JSON.stringify({
-            merchant_name: merchantName,
-            account_number: cardNumber.current.value,
-            expiration_date: formatDate(expDate.current.value),
-            created_date: new Date(),
-            zip_code: zipCode.current.value,
-            security_code: CVC.current.value,
-            customer_id: localStorage.getItem("id")
-          })
-      })
-      .then(() => props.getPaymentList())
+            },
+            "body": JSON.stringify({
+                merchant_name: merchantName,
+                account_number: cardNumber.current.value,
+                expiration_date: formatDate(expDate.current.value),
+                created_date: new Date(),
+                zip_code: zipCode.current.value,
+                security_code: CVC.current.value,
+                customer_id: localStorage.getItem("id")
+            })
+        })
+        .then(() => props.getPaymentList())
     }
 
     const updateName = (event) => {
@@ -142,7 +146,7 @@ const EditPayment = props => {
             </div>
             <div className="confirm-payment">
                 <Link className="nav-link nav-color" to={`/payment`}>
-                    <button className="change-settings" onClick={addPayment}>Add Payment</button>
+                    <button className="change-settings" onClick={addPayment}>Save Edits</button>
                 </Link>
             </div>
           </section>

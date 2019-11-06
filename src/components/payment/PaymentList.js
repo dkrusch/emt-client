@@ -22,7 +22,7 @@ const PaymentList = props => {
             <div className="confirm-payment">
                 {
                     props.paymentList.map(payment => {
-                        return <PaymentItem payment={payment} getPayments={props.getPaymentList}></PaymentItem>
+                        return <PaymentItem key={payment.id} payment={payment} getPayments={props.getPaymentList}></PaymentItem>
                     })
                 }
             </div>
