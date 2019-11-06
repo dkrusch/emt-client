@@ -9,6 +9,7 @@ import NumberFormat from 'react-number-format';
 
 const CreateOrder = props => {
     const [setting, setSettings] = useState({})
+    const [paymentList, setPaymentList] = useState([])
     const [denom, setDenom] = useState("")
     const [denomValue, setDenomValue] = useState("")
     const orderAmount = useRef()
@@ -45,9 +46,25 @@ const CreateOrder = props => {
       .then(setCompleteOrders)
     }
 
+    const getPaymentList = () => {
+      fetch(`http://192.168.1.4:8000/payments?customer=${localStorage.getItem("id")}`, {
+          "method": "GET",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+          }
+      })
+      .then(response => response.json())
+      .then(response => {
+          setPaymentList(response)
+      })
+    }
+
     useEffect(() => {
       getStores()
       getCompleteOrders()
+      getPaymentList()
     }, [])
 
     let vendAmount = props.store.vend_limit
@@ -204,11 +221,21 @@ const CreateOrder = props => {
                 <NumberFormat placeholder="$000" onChange={checkValue} ref={orderAmount} className="form-vend" thousandSeparator={true} format={moneyMax} />
               </div>
               <h4>Vend Time Range:</h4>
-              <div className="time-range">
+              <div className="denomination">
                   <label htmlFor="denomination"> Order Denomination </label>
                   <select name="denomination" className="dropdown" value={denomValue} onChange={e => handleChange(e)}>
                     <option value="select-domination">Select Denomination</option>
                     {denom}
+                  </select>
+              </div>
+              <div className="payment">
+                  <label htmlFor="denomination"> Payment </label>
+                  <select name="denomination" className="dropdown" value={denomValue} onChange={e => handleChange(e)}>
+                    {
+                      paymentList.map(payment => {
+                        return <option value={payment.id}>... {payment.account_number.substring(14)}</option>
+                      })
+                    }
                   </select>
               </div>
               <button className="change-settings" onClick={checkTime}>Create Order</button>
