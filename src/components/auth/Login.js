@@ -22,11 +22,11 @@ const Login = props => {
         }
 
         login(credentials)
-            .then(() => {
-                props.history.push({
-                    pathname: "/"
-                })
+        .then(() => {
+            props.history.push({
+                pathname: "/stores"
             })
+        })
     }
 
     return (

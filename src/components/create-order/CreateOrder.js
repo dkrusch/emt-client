@@ -8,7 +8,7 @@ import NumberFormat from 'react-number-format';
 
 
 const CreateOrder = props => {
-    const [setting, setSettings] = useState({})
+    const [store, setStore] = useState({})
     const [paymentList, setPaymentList] = useState([])
     const [denom, setDenom] = useState("")
     const [denomValue, setDenomValue] = useState("")
@@ -18,8 +18,10 @@ const CreateOrder = props => {
     const {isAuthenticated} = useSimpleAuth()
     // const searchTerm = useRef()
 
+    console.log("henlo")
     const getStores = () => {
-      fetch(`http://192.168.21.117:8000/stores/${props.store.id}`, {
+      console.log("HELLO", props.storeId)
+      fetch(`http://192.168.21.117:8000/stores/${props.storeId}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -29,7 +31,7 @@ const CreateOrder = props => {
       })
       .then(response => response.json())
       .then(response => {
-          setSettings(response)
+          setStore(response)
           orderAmount.current.value = response.vend_limit
       })
     }
@@ -68,7 +70,7 @@ const CreateOrder = props => {
       getPaymentList()
     }, [])
 
-    let vendAmount = props.store.vend_limit
+    let vendAmount = store.vend_limit
 
     let checkDate = new Date()
     let earned = 0
@@ -110,14 +112,6 @@ const CreateOrder = props => {
           val = max;
         }
 
-        // if (money === true) {
-        //     if (val.length === 3) {
-        //         if (Number(val) === 0) {
-        //             val = '001';
-        //         }
-        //     }
-        // }
-
         return val;
     }
 
@@ -137,7 +131,7 @@ const CreateOrder = props => {
             "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
           },
           "body": JSON.stringify({
-            store_id: props.store.id,
+            store_id: store.id,
             payment_type: parseInt(paymentValue),
             customer_id: localStorage.getItem("id"),
             vend_amount: parseInt(orderAmount.current.value),
@@ -186,7 +180,7 @@ const CreateOrder = props => {
         localTime = "0" + localTime
       }
 
-      if ((localTime + uniTime.substring(2)) > props.store.end_time || (localTime + uniTime.substring(2)) < props.store.start_time)
+      if ((localTime + uniTime.substring(2)) > store.end_time || (localTime + uniTime.substring(2)) < store.start_time)
       {
         alert("Sorry, this store is no longer taking orders.")
       }
@@ -236,7 +230,7 @@ const CreateOrder = props => {
       <>
           <section className="store-profile">
             <div className="edit-form">
-              <h1>Place Order at {props.store.store_name}</h1>
+              <h1>Place Order at {store.store_name}</h1>
               <h2>Amount Available: {vendAmount}</h2>
               <h4>Order Amount:</h4>
               <div className="vend-amount">

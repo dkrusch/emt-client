@@ -63,11 +63,11 @@ const ApplicationViews = () => {
         .then(setPayments)
       }
 
-    useEffect(() => {
-        getStores()
-        getPayments()
-        getPaymentList()
-    }, [])
+    // useEffect(() => {
+    //     getStores()
+    //     getPayments()
+    //     getPaymentList()
+    // }, [])
 
     return (
         <React.Fragment>
@@ -104,21 +104,13 @@ const ApplicationViews = () => {
 
             <Route
                 exact path="/editpayment/:paymentId(\d+)" render={props => {
-                    let payment = payments.find(payment => payment.id === +props.match.params.paymentId)
-
-                    if (payment) {
-                        return <EditPayment {...props} payment={payment} getPaymentList={getPaymentList} />
-                    }
+                        return <EditPayment {...props} paymentId={+props.match.params.paymentId} getPaymentList={getPaymentList} />
                 }}
             />
 
             <Route
                 exact path="/createorder/:storeId(\d+)" render={props => {
-                    let store = stores.find(store => store.id === +props.match.params.storeId)
-
-                    if (store) {
-                        return <CreateOrder {...props} store={store} />
-                    }
+                        return <CreateOrder {...props} storeId={+props.match.params.storeId} />
                 }}
             />
 

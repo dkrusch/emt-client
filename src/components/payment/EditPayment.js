@@ -15,15 +15,32 @@ const EditPayment = props => {
     const CVC = useRef()
 
     const setValues = () => {
-        setMerchant(props.payment.merchant_name)
-        zipCode.current.value = props.payment.zip_code
-        cardNumber.current.value = props.payment.account_number
-        expDate.current.value = unformatDate(props.payment.expiration_date)
-        CVC.current.value = props.payment.security_code
+        console.log("set values", payment)
+        setMerchant(payment.merchant_name)
+        zipCode.current.value = payment.zip_code
+        cardNumber.current.value = payment.account_number
+        expDate.current.value = unformatDate(payment.expiration_date)
+        CVC.current.value = payment.security_code
     }
 
+    const getPayment = () => {
+        fetch(`http://192.168.21.117:8000/payments/${props.paymentId}`, {
+            "method": "GET",
+            "headers": {
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+              "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+            }
+        })
+        .then(response => response.json())
+        .then(response => {
+            setPayments(response, setValues())
+        })
+    }
+
+
     useEffect(() => {
-        setValues()
+        getPayment()
     }, [])
 
 
@@ -33,7 +50,7 @@ const EditPayment = props => {
     }
 
     const addPayment = () => {
-      fetch(`http://192.168.21.117:8000/payments/${props.payment.id}`, {
+      fetch(`http://192.168.21.117:8000/payments/${payment.id}`, {
           "method": "PUT",
           "headers": {
             "Accept": "application/json",
@@ -101,6 +118,9 @@ const EditPayment = props => {
     }
 
     const unformatDate = (date) => {
+        if (!date) {
+            return
+        }
         let splitDate = date.split("-")
         return splitDate[1] + "/" + splitDate[0].substring(2)
     }
@@ -111,13 +131,13 @@ const EditPayment = props => {
             <div className="add-form">
               <h1>Add Payment</h1>
               <div className="payment-extra">
-                <input onChange={updateName} defaultValue="" placeholder="Merchant name" className="form-control" placeholder={props.payment.merchant_name} ></input>
-                <NumberFormat onChange={updateZip} thousandSeparator={true} placeholder={props.payment.zip_code} className="form-control" format="#####" ref={zipCode} />
+                <input onChange={updateName} defaultValue="" placeholder="Merchant name" className="form-control" placeholder={payment.merchant_name} ></input>
+                <NumberFormat onChange={updateZip} thousandSeparator={true} placeholder={payment.zip_code} className="form-control" format="#####" ref={zipCode} />
               </div>
               <div className="payment-important">
-                <NumberFormat onChange={updateCard} thousandSeparator={true} placeholder={props.payment.account_number} className="form-control" format="#### #### #### ####" ref={cardNumber} />
-                <NumberFormat onChange={updateExp} format={cardExpiry} className="form-control" placeholder={unformatDate(props.payment.expiration_date)} mask={['M', 'M', 'Y', 'Y']} ref={expDate}/>
-                <NumberFormat onChange={updateCvc} format="###" className="form-control" placeholder={props.payment.security_code} ref={CVC}/>
+                <NumberFormat onChange={updateCard} thousandSeparator={true} placeholder={payment.account_number} className="form-control" format="#### #### #### ####" ref={cardNumber} />
+                <NumberFormat onChange={updateExp} format={cardExpiry} className="form-control" placeholder={unformatDate(payment.expiration_date)} mask={['M', 'M', 'Y', 'Y']} ref={expDate}/>
+                <NumberFormat onChange={updateCvc} format="###" className="form-control" placeholder={payment.security_code} ref={CVC}/>
               </div>
             </div>
             <div className="confirm-payment">

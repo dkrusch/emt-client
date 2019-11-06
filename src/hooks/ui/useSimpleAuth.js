@@ -37,14 +37,14 @@ const useSimpleAuth = () => {
             },
             body: JSON.stringify(credentials)
         })
-            .then(res => res.json())
-            .then(res => {
-                if ("valid" in res && res.valid && "token" in res) {
-                    localStorage.setItem( "id", res.id )
-                    localStorage.setItem( "bangazon_token", res.token )
-                    setIsLoggedIn(true)
-                }
-            })
+        .then(res => res.json())
+        .then(res => {
+            if ("valid" in res && res.valid && "token" in res) {
+                localStorage.setItem( "id", res.id )
+                localStorage.setItem( "bangazon_token", res.token )
+                setIsLoggedIn(true)
+            }
+        })
     }
 
     const logout = () => {
