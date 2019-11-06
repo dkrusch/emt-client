@@ -18,6 +18,22 @@ const ApplicationViews = () => {
     const [stores, setStores] = useState([])
     const [payments, setPayments] = useState([])
     const {isAuthenticated} = useSimpleAuth()
+    const [paymentlist, setPaymentList] = useState([])
+
+    const getPaymentList = () => {
+      fetch(`http://192.168.1.4:8000/payments?customer=${localStorage.getItem("id")}`, {
+          "method": "GET",
+          "headers": {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+          }
+      })
+      .then(response => response.json())
+      .then(response => {
+          setPaymentList(response)
+      })
+    }
 
     const getStores = () => {
       fetch(`http://192.168.1.4:8000/stores`, {
@@ -48,6 +64,7 @@ const ApplicationViews = () => {
     useEffect(() => {
         getStores()
         getPayments()
+        getPaymentList()
     }, [])
 
     return (
@@ -73,7 +90,7 @@ const ApplicationViews = () => {
 
             <Route
                 exact path="/payment" render={props => {
-                    return <PaymentList {...props} />
+                    return <PaymentList {...props} paymentList={paymentlist} />
                 }}
             />
 
@@ -88,7 +105,7 @@ const ApplicationViews = () => {
                     let payment = payments.find(payment => payment.id === +props.match.params.paymentId)
 
                     if (payment) {
-                        return <EditPayment {...props} payment={payment} />
+                        return <EditPayment {...props} payment={payment} getPaymentList={getPaymentList} />
                     }
                 }}
             />
