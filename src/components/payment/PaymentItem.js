@@ -16,6 +16,7 @@ const PaymentItem = props => {
                 <Link className="nav-link nav-color" to={`/editpayment/${props.payment.id}`}>
                     <div key={props.payment.id}>Edit</div>
                 </Link>
+                <button key={props.payment.id}>Delete</button>
             </div>
             <hr></hr>
           </section>

@@ -2,6 +2,8 @@ import { Route } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import { withRouter, Redirect } from "react-router-dom"
 import Register from "./auth/Register"
+import RegisterCustomer from "./auth/RegisterCustomer"
+import RegisterMerchant from "./auth/RegisterMerchant"
 import Login from "./auth/Login"
 import Store from "./store/Store"
 import Stores from "./stores/Stores"
@@ -123,6 +125,18 @@ const ApplicationViews = () => {
             <Route
                 exact path="/register" render={props => {
                     return <Register {...props} />
+                }}
+            />
+
+            <Route
+                exact path="/registercustomer" render={props => {
+                    return <RegisterCustomer {...props} />
+                }}
+            />
+
+            <Route
+                exact path="/registermerchant" render={props => {
+                    return <RegisterMerchant {...props} />
                 }}
             />
 

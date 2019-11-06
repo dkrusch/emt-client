@@ -26,6 +26,7 @@ const Store = props => {
     }
 
     const getOpenOrders = () => {
+      console.log("this world")
       fetch(`http://192.168.21.117:8000/orders?merchant=${localStorage.getItem("id")}&complete=0`, {
           "method": "GET",
           "headers": {
@@ -57,6 +58,10 @@ const Store = props => {
       getSettings()
       getOpenOrders()
       getCompleteOrders()
+      const interval = setInterval(() => {
+        getOpenOrders()
+      }, 1000);
+      return () => clearInterval(interval);
     }, [])
 
     let vendLimit = setting.vend_limit
