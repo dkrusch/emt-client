@@ -5,7 +5,7 @@ import NumberFormat from 'react-number-format';
 import "./Payment.css"
 
 
-const Payment = props => {
+const EditPayment = props => {
     const [payment, setPayments] = useState({})
     const merchantName = useRef()
     const zipCode = useRef()
@@ -108,4 +108,4 @@ const Payment = props => {
     )
   }
 
-export default Payment
+export default EditPayment
