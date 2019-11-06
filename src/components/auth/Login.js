@@ -23,9 +23,19 @@ const Login = props => {
 
         login(credentials)
         .then(() => {
-            props.history.push({
-                pathname: "/stores"
-            })
+            console.log("snee snaw", localStorage)
+            if (localStorage.getItem("is_merchant") === "true")
+            {
+                props.history.push({
+                    pathname: "/mystore"
+                })
+            }
+            else
+            {
+                props.history.push({
+                    pathname: "/stores"
+                })
+            }
         })
     }
 
