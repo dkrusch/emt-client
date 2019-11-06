@@ -3,6 +3,7 @@ import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
 import "bootstrap/dist/css/bootstrap.min.css"
 import NumberFormat from 'react-number-format';
 import "./Payment.css"
+import { Link } from "react-router-dom"
 
 
 const Payment = props => {
@@ -20,14 +21,14 @@ const Payment = props => {
 
     const addPayment = () => {
         console.log(merchantName.current.value, cardNumber.current.value, expDate.current.value, zipCode.current.value, CVC.current.value)
-      fetch(`http://192.168.21.117:8000/payments`, {
-          "method": "POST",
-          "headers": {
+        fetch(`http://192.168.21.117:8000/payments`, {
+            "method": "POST",
+            "headers": {
             "Accept": "application/json",
             "Content-Type": "application/json",
             "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
-          },
-          "body": JSON.stringify({
+            },
+            "body": JSON.stringify({
             merchant_name: merchantName.current.value,
             account_number: cardNumber.current.value,
             expiration_date: formatDate(expDate.current.value),
@@ -35,12 +36,9 @@ const Payment = props => {
             zip_code: zipCode.current.value,
             security_code: CVC.current.value,
             customer_id: localStorage.getItem("id")
-          })
-      })
-      .then(response => response.json())
-      .then(response => {
-          setPayments(response)
-      })
+            })
+        })
+        .then(() => {props.getPaymentList()})
     }
 
     const updateZip = (event) => {
@@ -101,7 +99,9 @@ const Payment = props => {
               </div>
             </div>
             <div className="confirm-payment">
-                <button className="change-settings" onClick={addPayment}>Add Payment</button>
+                <Link className="nav-link nav-color" to={`/payment`}>
+                    <button className="change-settings" onClick={addPayment}>Add Payment</button>
+                </Link>
             </div>
           </section>
       </>

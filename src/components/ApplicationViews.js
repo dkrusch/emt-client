@@ -37,31 +37,31 @@ const ApplicationViews = () => {
       })
     }
 
-    const getStores = () => {
-      fetch(`http://192.168.21.117:8000/stores`, {
-          "method": "GET",
-          "headers": {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
-          }
-      })
-      .then(response => response.json())
-      .then(setStores)
-    }
+    // const getStores = () => {
+    //   fetch(`http://192.168.21.117:8000/stores`, {
+    //       "method": "GET",
+    //       "headers": {
+    //         "Accept": "application/json",
+    //         "Content-Type": "application/json",
+    //         "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+    //       }
+    //   })
+    //   .then(response => response.json())
+    //   .then(setStores)
+    // }
 
-    const getPayments = () => {
-        fetch(`http://192.168.21.117:8000/payments`, {
-            "method": "GET",
-            "headers": {
-              "Accept": "application/json",
-              "Content-Type": "application/json",
-              "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
-            }
-        })
-        .then(response => response.json())
-        .then(setPayments)
-      }
+    // const getPayments = () => {
+    //     fetch(`http://192.168.21.117:8000/payments`, {
+    //         "method": "GET",
+    //         "headers": {
+    //           "Accept": "application/json",
+    //           "Content-Type": "application/json",
+    //           "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+    //         }
+    //     })
+    //     .then(response => response.json())
+    //     .then(setPayments)
+    //   }
 
     // useEffect(() => {
     //     getStores()
@@ -92,13 +92,13 @@ const ApplicationViews = () => {
 
             <Route
                 exact path="/payment" render={props => {
-                    return <PaymentList {...props} paymentList={paymentlist} />
+                    return <PaymentList {...props} paymentList={paymentlist} getPaymentList={getPaymentList} />
                 }}
             />
 
             <Route
                 exact path="/addpayment" render={props => {
-                    return <Payment {...props} />
+                    return <Payment {...props} getPaymentList={getPaymentList} />
                 }}
             />
 
