@@ -62,3 +62,9 @@ html, body, #root {
 .bg-success {
   background-color: #67925e !important;
 }
+
+.new-orders {
+  margin-top: 10px;
+    flex-direction: column;
+    width: 30%;
+}

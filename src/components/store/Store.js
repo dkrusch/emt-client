@@ -114,7 +114,7 @@ const Store = props => {
             </div>
             <div className="add-line"></div>
             {console.log("orders", orders)}
-            <div className="incoming">
+            <div className="new-orders">
               <h4>Complete Orders: {completedOrders}</h4>
               {
                 component
