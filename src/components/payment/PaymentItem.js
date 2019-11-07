@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef} from "react"
-// import "./Store.css"
+import "./Payment"
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
 import { valueToNode } from "@babel/types"
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -7,7 +7,7 @@ import { Link } from "react-router-dom"
 
 const PaymentItem = props => {
     const deletePayment = () => {
-        fetch(`http://192.168.1.4:8000/payments/${props.payment.id}`, {
+        fetch(`http://192.168.21.117:8000/payments/${props.payment.id}`, {
             "method": "DELETE",
             "headers": {
             "Accept": "application/json",
@@ -31,7 +31,7 @@ const PaymentItem = props => {
                 <Link className="nav-link nav-color" to={`/editpayment/${props.payment.id}`}>
                     <div key={props.payment.id}>Edit</div>
                 </Link>
-                <button key={props.payment.id} onClick={deletePayment}>Delete</button>
+                <button className="delete" key={props.payment.id} onClick={deletePayment}>Delete</button>
             </div>
             <hr></hr>
           </section>

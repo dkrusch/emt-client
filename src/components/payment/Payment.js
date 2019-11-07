@@ -21,7 +21,7 @@ const Payment = props => {
 
     const addPayment = () => {
         console.log(merchantName.current.value, cardNumber.current.value, expDate.current.value, zipCode.current.value, CVC.current.value)
-        fetch(`http://192.168.1.4:8000/payments`, {
+        fetch(`http://192.168.21.117:8000/payments`, {
             "method": "POST",
             "headers": {
             "Accept": "application/json",

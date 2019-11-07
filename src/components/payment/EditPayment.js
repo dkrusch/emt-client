@@ -9,7 +9,7 @@ import { Link } from "react-router-dom"
 const EditPayment = props => {
     const [payment, setPayments] = useState({})
     const [merchantName, setMerchant] = useState("")
-    const zipCode = useRef()
+    const zipCode = useRef([])
     const cardNumber = useRef()
     const expDate = useRef()
     const CVC = useRef()
@@ -25,7 +25,7 @@ const EditPayment = props => {
     }
 
     const getPayment = () => {
-        fetch(`http://192.168.1.4:8000/payments/${props.paymentId}`, {
+        fetch(`http://192.168.21.117:8000/payments/${props.paymentId}`, {
             "method": "GET",
             "headers": {
               "Accept": "application/json",
@@ -36,7 +36,6 @@ const EditPayment = props => {
         .then(response => response.json())
         .then(response => {
             setPayments(response)
-            setValues()
         })
     }
 
@@ -45,6 +44,9 @@ const EditPayment = props => {
         getPayment()
     }, [])
 
+    useEffect(() => {
+      setValues()
+    }, [payment])
 
     const formatDate = (date) => {
         console.log("date", date)
@@ -54,7 +56,7 @@ const EditPayment = props => {
 
     const addPayment = () => {
         console.log(merchantName)
-        fetch(`http://192.168.1.4:8000/payments/${payment.id}`, {
+        fetch(`http://192.168.21.117:8000/payments/${payment.id}`, {
             "method": "PUT",
             "headers": {
             "Accept": "application/json",
@@ -135,13 +137,13 @@ const EditPayment = props => {
             <div className="add-form">
               <h1>Add Payment</h1>
               <div className="payment-extra">
-                <input onChange={updateName} defaultValue="" placeholder="Merchant name" className="form-control" placeholder={payment.merchant_name} ></input>
-                <NumberFormat onChange={updateZip} thousandSeparator={true} placeholder={payment.zip_code} className="form-control" format="#####" ref={zipCode} />
+                <input onChange={updateName} defaultValue={payment.merchant_name} placeholder="Merchant name" className="form-control" placeholder={payment.merchant_name} ></input>
+                <NumberFormat onChange={updateZip} value={payment.zip_code} thousandSeparator={true} placeholder={payment.zip_code} className="form-control" format="#####" ref={zipCode} />
               </div>
               <div className="payment-important">
-                <NumberFormat onChange={updateCard} thousandSeparator={true} placeholder={payment.account_number} className="form-control" format="#### #### #### ####" ref={cardNumber} />
-                <NumberFormat onChange={updateExp} format={cardExpiry} className="form-control" placeholder={unformatDate(payment.expiration_date)} mask={['M', 'M', 'Y', 'Y']} ref={expDate}/>
-                <NumberFormat onChange={updateCvc} format="###" className="form-control" placeholder={payment.security_code} ref={CVC}/>
+                <NumberFormat onChange={updateCard} value={payment.account_number} thousandSeparator={true} placeholder={payment.account_number} className="form-control" format="#### #### #### ####" ref={cardNumber} />
+                <NumberFormat onChange={updateExp} value={unformatDate(payment.expiration_date)} format={cardExpiry} className="form-control" placeholder={unformatDate(payment.expiration_date)} mask={['M', 'M', 'Y', 'Y']} ref={expDate}/>
+                <NumberFormat onChange={updateCvc} value={payment.security_code} format="###" className="form-control" placeholder={payment.security_code} ref={CVC}/>
               </div>
             </div>
             <div className="confirm-payment">

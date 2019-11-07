@@ -2,6 +2,7 @@ import React from "react"
 import { Link } from "react-router-dom"
 import "bootstrap/dist/css/bootstrap.min.css"
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
+import "../auth/Welcome.css"
 
 // Author: Danny & Dustin (Changed elements of Nav)
 // Purpose: Display Nav bar with functional links for clientside
@@ -16,29 +17,34 @@ const NavBar = props => {
         {
             return (
                 <nav className="navbar navbar-light light-blue flex-md-nowrap p-0 shadow">
-                    <ul className="nav nav-pills nav-fill">
+                    <ul className="nav nav-pills nav-fill nav-space">
 
                         {
                             <>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/mystore">My Store</Link>
-                                </li>
+                                <div className="link-group">
+                                    <li className="nav-item">
+                                        <Link className="nav-link nav-color" to="/mystore">My Store</Link>
+                                    </li>
 
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/storesettings">Store Settings</Link>
-                                </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link nav-color" to="/storesettings">Store Settings</Link>
+                                    </li>
+                                </div>
 
-                                <li className="nav-item">
-                                    <button className="nav-link fakeLink"
-                                        onClick={() => {
-                                            logout()
-                                            props.history.push({
-                                                pathname: "/"
-                                            })
-                                        }
-                                        }
-                                    >Logout</button>
-                                </li>
+                                <div>
+                                    <li className="nav-item">
+                                        <button className="nav-link fakeLink logout"
+                                            onClick={() => {
+                                                logout()
+                                                props.history.push({
+                                                    pathname: "/"
+                                                })
+                                            }
+                                            }
+                                        >Logout</button>
+                                    </li>
+                                </div>
+
 
                             </>
                         }
@@ -50,28 +56,33 @@ const NavBar = props => {
         {
             return (
                 <nav className="navbar navbar-light light-blue flex-md-nowrap p-0 shadow">
-                    <ul className="nav nav-pills nav-fill">
+                    <ul className="nav nav-pills nav-fill nav-space">
                         {
                             <>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/stores">Stores</Link>
-                                </li>
+                                <div className="link-group">
+                                    <li className="nav-item">
+                                        <Link className="nav-link nav-color" to="/stores">Stores</Link>
+                                    </li>
 
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/payment">Payment Settings</Link>
-                                </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link nav-color" to="/payment">Payment Settings</Link>
+                                    </li>
+                                </div>
 
-                                <li className="nav-item">
-                                    <button className="nav-link fakeLink"
-                                        onClick={() => {
-                                            logout()
-                                            props.history.push({
-                                                pathname: "/"
-                                            })
-                                        }
-                                        }
-                                    >Logout</button>
-                                </li>
+                                <div className="logout-group">
+                                    <li className="nav-item">
+                                        <button className="nav-link fakeLink logout"
+                                            onClick={() => {
+                                                logout()
+                                                props.history.push({
+                                                    pathname: "/"
+                                                })
+                                            }
+                                            }
+                                        >Logout</button>
+                                    </li>
+                                </div>
+
 
                                 </>
                         }
@@ -89,10 +100,10 @@ const NavBar = props => {
                     {
                             <>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/login">Login</Link>
+                                    <Link className="nav-link nav-color" to="/login">Login</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/register">Register</Link>
+                                    <Link className="nav-link nav-color" to="/register">Register</Link>
                                 </li>
                             </>
                     }

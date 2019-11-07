@@ -16,6 +16,7 @@ const OrderHistory = props => {
             <div>{props.order.customer.full_name}</div>
             <div>${props.order.vend_amount}</div>
             <div>In ${props.order.denomination} bills</div>
+            <hr></hr>
           </section>
       </>
     )
