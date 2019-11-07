@@ -26,17 +26,17 @@ html, body, #root {
 }
 
 .progress {
-  width: 200px;
-  margin: 5px;
+  margin: 10px 0px;
+  height: 40px;
+  width: 100%;
 }
 
 .incoming {
   flex-direction: column;
-  /* margin: 5px; */
 }
 
 .dashboard {
-  width: 80%;
+  width: 70%;
   margin: 10px;
   border: 1px
 }
@@ -55,12 +55,10 @@ html, body, #root {
   margin: 10px;
 }
 
-.progress {
-  height: 20px;
-  width: 40%;
-}
-
-.progress-bar {
+/* .progress-bar {
   background: #85bb65;
-}
+} */
 
+.bg-success {
+  background-color: #67925e !important;
+}

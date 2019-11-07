@@ -331,15 +331,6 @@ html, body {
     height: 20px;
 }
 
-.add-line {
-    width: 1px; /* Line width */
-    margin-right: 10px;
-    background: linear-gradient(to bottom, white, rgb(131, 131, 131), rgb(131, 131, 131), rgb(131, 131, 131));
-    height: auto; /* Override in-line if you want specific height. */
-    color: transparent;
-    float: left;
-}
-
 .edit-label {
     margin: 0px;
 }

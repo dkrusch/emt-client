@@ -3,6 +3,7 @@ import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
 import "bootstrap/dist/css/bootstrap.min.css"
 import NumberFormat from 'react-number-format';
 import "./Payment.css"
+import "../store-profile/StoreProfile.css"
 import { Link } from "react-router-dom"
 
 
@@ -135,15 +136,15 @@ const EditPayment = props => {
       <>
           <section className="add-payment">
             <div className="add-form">
-              <h1>Add Payment</h1>
+              <h1>Edit Payment</h1>
               <div className="payment-extra">
-                <input onChange={updateName} defaultValue={payment.merchant_name} placeholder="Merchant name" className="form-control" placeholder={payment.merchant_name} ></input>
-                <NumberFormat onChange={updateZip} value={payment.zip_code} thousandSeparator={true} placeholder={payment.zip_code} className="form-control" format="#####" ref={zipCode} />
+                <input className="form-vend" onChange={updateName} defaultValue={payment.merchant_name} placeholder="Merchant name" placeholder={payment.merchant_name} ></input>
+                <NumberFormat className="form-vend" onChange={updateZip} value={payment.zip_code} thousandSeparator={true} placeholder={payment.zip_code} format="#####" ref={zipCode} />
               </div>
               <div className="payment-important">
-                <NumberFormat onChange={updateCard} value={payment.account_number} thousandSeparator={true} placeholder={payment.account_number} className="form-control" format="#### #### #### ####" ref={cardNumber} />
-                <NumberFormat onChange={updateExp} value={unformatDate(payment.expiration_date)} format={cardExpiry} className="form-control" placeholder={unformatDate(payment.expiration_date)} mask={['M', 'M', 'Y', 'Y']} ref={expDate}/>
-                <NumberFormat onChange={updateCvc} value={payment.security_code} format="###" className="form-control" placeholder={payment.security_code} ref={CVC}/>
+                <NumberFormat className="form-vend" onChange={updateCard} value={payment.account_number} thousandSeparator={true} placeholder={payment.account_number} format="#### #### #### ####" ref={cardNumber} />
+                <NumberFormat className="form-vend" onChange={updateExp} value={unformatDate(payment.expiration_date)} format={cardExpiry} placeholder={unformatDate(payment.expiration_date)} mask={['M', 'M', 'Y', 'Y']} ref={expDate}/>
+                <NumberFormat className="form-vend" onChange={updateCvc} value={payment.security_code} format="###" placeholder={payment.security_code} ref={CVC}/>
               </div>
             </div>
             <div className="confirm-payment">

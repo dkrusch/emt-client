@@ -234,8 +234,8 @@ const CreateOrder = props => {
       <>
           <section className="store-profile">
             <div className="edit-form">
-              <h1>Place Order at {store.store_name}</h1>
-              <h2>Amount Available: {vendAmount}</h2>
+              <h2>Place Order at {store.store_name}</h2>
+              <h3>Amount Available: ${vendAmount}</h3>
               <h4>Order Amount:</h4>
               <div className="vend-amount">
                 <NumberFormat placeholder="$000" onChange={checkValue} ref={orderAmount} className="form-vend" thousandSeparator={true} format={moneyMax} />

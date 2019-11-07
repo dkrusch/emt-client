@@ -89,13 +89,13 @@ const Payment = props => {
             <div className="add-form">
               <h1>Add Payment</h1>
               <div className="payment-extra">
-                <input placeholder="Merchant name" className="form-control" ref={merchantName}></input>
-                <NumberFormat onChange={updateZip} thousandSeparator={true} placeholder="Zip" className="form-control" format="#####" ref={zipCode} />
+                <input placeholder="Merchant name" className="form-vend" ref={merchantName}></input>
+                <NumberFormat onChange={updateZip} thousandSeparator={true} placeholder="Zip" className="form-vend" format="#####" ref={zipCode} />
               </div>
               <div className="payment-important">
-                <NumberFormat onChange={updateCard} thousandSeparator={true} placeholder="Card Number" className="form-control" format="#### #### #### ####" ref={cardNumber} />
-                <NumberFormat onChange={updateExp} format={cardExpiry} className="form-control" placeholder="MM/YY" mask={['M', 'M', 'Y', 'Y']} ref={expDate}/>
-                <NumberFormat onChange={updateCvc} format="###" className="form-control" placeholder="CVC" ref={CVC}/>
+                <NumberFormat onChange={updateCard} thousandSeparator={true} placeholder="Card Number" className="form-vend" format="#### #### #### ####" ref={cardNumber} />
+                <NumberFormat onChange={updateExp} format={cardExpiry} className="form-vend" placeholder="MM/YY" mask={['M', 'M', 'Y', 'Y']} ref={expDate}/>
+                <NumberFormat onChange={updateCvc} format="###" className="form-vend" placeholder="CVC" ref={CVC}/>
               </div>
             </div>
             <div className="confirm-payment">
