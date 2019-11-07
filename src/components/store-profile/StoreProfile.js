@@ -35,7 +35,7 @@ const StoreProfile = props => {
     }
 
     const getCompleteOrders = () => {
-        fetch(`http://192.168.21.117:8000/orders?merchant=1&complete=1`, {
+        fetch(`http://192.168.21.117:8000/orders?merchant=${localStorage.getItem("id")}&complete=1`, {
             "method": "GET",
             "headers": {
                 "Accept": "application/json",
@@ -166,7 +166,7 @@ const StoreProfile = props => {
                     /> */}
                     <NumberFormat ref={startTime}
                         name="startTime"
-                        className="form-control"
+                        className="form-time"
                         placeholder={setting.start_time} format={starttimeMax} mask="_"/>
                 </fieldset>
                   <hr className="line"></hr>
@@ -174,18 +174,18 @@ const StoreProfile = props => {
                     <label htmlFor="endTime"> End Time </label>
                     <NumberFormat ref={endTime}
                         name="endTime"
-                        className="form-control"
+                        className="form-time"
                         placeholder={setting.end_time} format={endtimeMax} mask="_"/>
                 </fieldset>
               </div>
               <h4>Vend Limit:</h4>
               <div className="vend-amount">
-                <NumberFormat placeholder={"$" + setting.vend_limit} ref={vendLimit} className="form-vend" thousandSeparator={true} format={moneyMax} />
+                <NumberFormat placeholder={"$" + setting.vend_limit} ref={vendLimit} className="form-amount" thousandSeparator={true} format={moneyMax} />
               </div>
               <button className="change-settings" onClick={changeSettings}>Submit Changes</button>
             </div>
             <div className="add-line"></div>
-            <div className="incoming">
+            <div className="complete-orders">
               <h4>Complete Orders: {completedOrders}</h4>
               {
                 component

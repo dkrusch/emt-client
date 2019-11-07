@@ -8,26 +8,10 @@ import { Link } from "react-router-dom"
 
 
 const PaymentList = props => {
-    // const [payments, setPayments] = useState([])
 
-    // const getPayments = () => {
-    //   fetch(`http://192.168.21.117:8000/payments?customer=${localStorage.getItem("id")}`, {
-    //       "method": "GET",
-    //       "headers": {
-    //         "Accept": "application/json",
-    //         "Content-Type": "application/json",
-    //         "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
-    //       }
-    //   })
-    //   .then(response => response.json())
-    //   .then(response => {
-    //       setPayments(response)
-    //   })
-    // }
-
-    // useEffect(() => {
-    //     getPayments()
-    // }, [])
+    useEffect(() => {
+        props.getPaymentList()
+    }, [])
 
     return(
       <>
@@ -38,7 +22,7 @@ const PaymentList = props => {
             <div className="confirm-payment">
                 {
                     props.paymentList.map(payment => {
-                        return <PaymentItem payment={payment}></PaymentItem>
+                        return <PaymentItem key={payment.id} payment={payment} getPayments={props.getPaymentList}></PaymentItem>
                     })
                 }
             </div>

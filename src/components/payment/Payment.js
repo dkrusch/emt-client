@@ -3,6 +3,7 @@ import useSimpleAuth from "../../hooks/ui/useSimpleAuth"
 import "bootstrap/dist/css/bootstrap.min.css"
 import NumberFormat from 'react-number-format';
 import "./Payment.css"
+import { Link } from "react-router-dom"
 
 
 const Payment = props => {
@@ -20,14 +21,14 @@ const Payment = props => {
 
     const addPayment = () => {
         console.log(merchantName.current.value, cardNumber.current.value, expDate.current.value, zipCode.current.value, CVC.current.value)
-      fetch(`http://192.168.21.117:8000/payments`, {
-          "method": "POST",
-          "headers": {
+        fetch(`http://192.168.21.117:8000/payments`, {
+            "method": "POST",
+            "headers": {
             "Accept": "application/json",
             "Content-Type": "application/json",
             "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
-          },
-          "body": JSON.stringify({
+            },
+            "body": JSON.stringify({
             merchant_name: merchantName.current.value,
             account_number: cardNumber.current.value,
             expiration_date: formatDate(expDate.current.value),
@@ -35,12 +36,9 @@ const Payment = props => {
             zip_code: zipCode.current.value,
             security_code: CVC.current.value,
             customer_id: localStorage.getItem("id")
-          })
-      })
-      .then(response => response.json())
-      .then(response => {
-          setPayments(response)
-      })
+            })
+        })
+        .then(() => {props.getPaymentList()})
     }
 
     const updateZip = (event) => {
@@ -91,17 +89,19 @@ const Payment = props => {
             <div className="add-form">
               <h1>Add Payment</h1>
               <div className="payment-extra">
-                <input placeholder="Merchant name" className="form-control" ref={merchantName}></input>
-                <NumberFormat onChange={updateZip} thousandSeparator={true} placeholder="Zip" className="form-control" format="#####" ref={zipCode} />
+                <input placeholder="Merchant name" className="form-vend" ref={merchantName}></input>
+                <NumberFormat onChange={updateZip} thousandSeparator={true} placeholder="Zip" className="form-vend" format="#####" ref={zipCode} />
               </div>
               <div className="payment-important">
-                <NumberFormat onChange={updateCard} thousandSeparator={true} placeholder="Card Number" className="form-control" format="#### #### #### ####" ref={cardNumber} />
-                <NumberFormat onChange={updateExp} format={cardExpiry} className="form-control" placeholder="MM/YY" mask={['M', 'M', 'Y', 'Y']} ref={expDate}/>
-                <NumberFormat onChange={updateCvc} format="###" className="form-control" placeholder="CVC" ref={CVC}/>
+                <NumberFormat onChange={updateCard} thousandSeparator={true} placeholder="Card Number" className="form-vend" format="#### #### #### ####" ref={cardNumber} />
+                <NumberFormat onChange={updateExp} format={cardExpiry} className="form-vend" placeholder="MM/YY" mask={['M', 'M', 'Y', 'Y']} ref={expDate}/>
+                <NumberFormat onChange={updateCvc} format="###" className="form-vend" placeholder="CVC" ref={CVC}/>
               </div>
             </div>
             <div className="confirm-payment">
-                <button className="change-settings" onClick={addPayment}>Add Payment</button>
+                <Link className="nav-link nav-color" to={`/payment`}>
+                    <button className="change-settings" onClick={addPayment}>Add Payment</button>
+                </Link>
             </div>
           </section>
       </>

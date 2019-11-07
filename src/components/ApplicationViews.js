@@ -2,6 +2,8 @@ import { Route } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import { withRouter, Redirect } from "react-router-dom"
 import Register from "./auth/Register"
+import RegisterCustomer from "./auth/RegisterCustomer"
+import RegisterMerchant from "./auth/RegisterMerchant"
 import Login from "./auth/Login"
 import Store from "./store/Store"
 import Stores from "./stores/Stores"
@@ -35,105 +37,113 @@ const ApplicationViews = () => {
       })
     }
 
-    const getStores = () => {
-      fetch(`http://192.168.21.117:8000/stores`, {
-          "method": "GET",
-          "headers": {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
-          }
-      })
-      .then(response => response.json())
-      .then(setStores)
+
+    if (localStorage.getItem("is_merchant") === "true") {
+        return (
+            <React.Fragment>
+
+                <Route
+                    exact path="/mystore" render={props => {
+                        return <Store {...props} />
+                    }}
+                />
+
+                <Route
+                    exact path="/storesettings" render={props => {
+                        return <StoreProfile {...props} />
+                    }}
+                />
+
+                <Route
+                    exact path="/register" render={props => {
+                        return <Register {...props} />
+                    }}
+                />
+
+                <Route
+                    exact path="/registercustomer" render={props => {
+                        return <RegisterCustomer {...props} />
+                    }}
+                />
+
+                <Route
+                    exact path="/registermerchant" render={props => {
+                        return <RegisterMerchant {...props} />
+                    }}
+                />
+
+                <Route
+                    exact path="/login" render={props => {
+                        return <Login {...props} />
+                    }}
+                />
+
+            </React.Fragment>
+        )
     }
 
-    const getPayments = () => {
-        fetch(`http://192.168.21.117:8000/payments`, {
-            "method": "GET",
-            "headers": {
-              "Accept": "application/json",
-              "Content-Type": "application/json",
-              "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
-            }
-        })
-        .then(response => response.json())
-        .then(setPayments)
-      }
+    else
+    {
+        return (
+            <React.Fragment>
 
-    useEffect(() => {
-        getStores()
-        getPayments()
-        getPaymentList()
-    }, [])
+                <Route
+                    exact path="/stores" render={props => {
+                        return <Stores {...props} />
+                    }}
+                />
 
-    return (
-        <React.Fragment>
+                <Route
+                    exact path="/payment" render={props => {
+                        return <PaymentList {...props} paymentList={paymentlist} getPaymentList={getPaymentList} />
+                    }}
+                />
 
-            <Route
-                exact path="/mystore" render={props => {
-                    return <Store {...props} />
-                }}
-            />
+                <Route
+                    exact path="/addpayment" render={props => {
+                        return <Payment {...props} getPaymentList={getPaymentList} />
+                    }}
+                />
 
-            <Route
-                exact path="/storesettings" render={props => {
-                    return <StoreProfile {...props} />
-                }}
-            />
+                <Route
+                    exact path="/editpayment/:paymentId(\d+)" render={props => {
+                            return <EditPayment {...props} paymentId={+props.match.params.paymentId} getPaymentList={getPaymentList} />
+                    }}
+                />
 
-            <Route
-                exact path="/stores" render={props => {
-                    return <Stores {...props} />
-                }}
-            />
+                <Route
+                    exact path="/createorder/:storeId(\d+)" render={props => {
+                            return <CreateOrder {...props} storeId={+props.match.params.storeId} />
+                    }}
+                />
 
-            <Route
-                exact path="/payment" render={props => {
-                    return <PaymentList {...props} paymentList={paymentlist} />
-                }}
-            />
+                <Route
+                    exact path="/register" render={props => {
+                        return <Register {...props} />
+                    }}
+                />
 
-            <Route
-                exact path="/addpayment" render={props => {
-                    return <Payment {...props} />
-                }}
-            />
+                <Route
+                    exact path="/registercustomer" render={props => {
+                        return <RegisterCustomer {...props} />
+                    }}
+                />
 
-            <Route
-                exact path="/editpayment/:paymentId(\d+)" render={props => {
-                    let payment = payments.find(payment => payment.id === +props.match.params.paymentId)
+                <Route
+                    exact path="/registermerchant" render={props => {
+                        return <RegisterMerchant {...props} />
+                    }}
+                />
 
-                    if (payment) {
-                        return <EditPayment {...props} payment={payment} getPaymentList={getPaymentList} />
-                    }
-                }}
-            />
+                <Route
+                    exact path="/login" render={props => {
+                        return <Login {...props} />
+                    }}
+                />
 
-            <Route
-                exact path="/createorder/:storeId(\d+)" render={props => {
-                    let store = stores.find(store => store.id === +props.match.params.storeId)
-
-                    if (store) {
-                        return <CreateOrder {...props} store={store} />
-                    }
-                }}
-            />
-
-            <Route
-                exact path="/register" render={props => {
-                    return <Register {...props} />
-                }}
-            />
-
-            <Route
-                exact path="/login" render={props => {
-                    return <Login {...props} />
-                }}
-            />
-
-        </React.Fragment>
-    )
+            </React.Fragment>
+        )
+    }
 }
 
 export default withRouter(ApplicationViews)

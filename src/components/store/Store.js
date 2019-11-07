@@ -26,6 +26,7 @@ const Store = props => {
     }
 
     const getOpenOrders = () => {
+      console.log("this world")
       fetch(`http://192.168.21.117:8000/orders?merchant=${localStorage.getItem("id")}&complete=0`, {
           "method": "GET",
           "headers": {
@@ -57,6 +58,10 @@ const Store = props => {
       getSettings()
       getOpenOrders()
       getCompleteOrders()
+      const interval = setInterval(() => {
+        getOpenOrders()
+      }, 1000);
+      return () => clearInterval(interval);
     }, [])
 
     let vendLimit = setting.vend_limit
@@ -64,6 +69,7 @@ const Store = props => {
     let earned = 0
     let vended = 0
     let completedOrders = 0
+    let amountLeft = setting.vendLimit
 
     console.log("completeorders", completeOrders)
 
@@ -78,6 +84,7 @@ const Store = props => {
         vendPercent = 100 - (100 * (vended / vendLimit))
         earned += 1
         completedOrders += 1
+        amountLeft = vendLimit - vended
       }
     })
 
@@ -97,16 +104,17 @@ const Store = props => {
           <section className="store-page">
             <div className="dashboard">
               <h1>{setting.store_name} Dashboard</h1>
+              <h4>Vend limit: ${setting.vend_limit}</h4>
               <div className="progress">
-                <div className="progress-bar" role="progressbar" style={{width: vendPercent + "%"}}></div>
+                <div className="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style={{width: vendPercent + "%"}}></div>
               </div>
-              <h4>Vend limit ${setting.vend_limit}</h4>
-              <h4>Amount Vended ${vended}</h4>
-              <h4>Amount Earned ${earned}</h4>
+              <h4>Amount Left: ${amountLeft}</h4>
+              <h4>Amount Vended: ${vended}</h4>
+              <h4>Amount Earned: ${earned}</h4>
             </div>
             <div className="add-line"></div>
             {console.log("orders", orders)}
-            <div className="incoming">
+            <div className="new-orders">
               <h4>Complete Orders: {completedOrders}</h4>
               {
                 component

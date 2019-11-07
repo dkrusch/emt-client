@@ -13,3 +13,11 @@
 .payment-important {
   display: inline;
 }
+
+.payment-details {
+  margin-left: 15px;
+}
+
+.delete {
+  margin-left: 15px;
+}

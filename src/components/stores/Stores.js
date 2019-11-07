@@ -48,7 +48,7 @@ const Stores = props => {
       <>
           <section className="store-list">
             <div className="incoming">
-              <h4>Stores: {stores.length}</h4>
+              <h4 className="number-of-stores">Stores: {stores.length}</h4>
               {
                 component
               }

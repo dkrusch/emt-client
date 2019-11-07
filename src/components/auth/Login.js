@@ -10,6 +10,7 @@ const Login = props => {
 
     // Simplistic handler for login submit
     const handleLogin = (e) => {
+        console.log("hello")
         e.preventDefault()
 
         /*
@@ -22,11 +23,21 @@ const Login = props => {
         }
 
         login(credentials)
-            .then(() => {
+        .then(() => {
+            console.log("snee snaw", localStorage)
+            if (localStorage.getItem("is_merchant") === "true")
+            {
                 props.history.push({
-                    pathname: "/"
+                    pathname: "/mystore"
                 })
-            })
+            }
+            else
+            {
+                props.history.push({
+                    pathname: "/stores"
+                })
+            }
+        })
     }
 
     return (

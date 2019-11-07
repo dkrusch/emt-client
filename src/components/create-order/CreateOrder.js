@@ -4,11 +4,12 @@ import { valueToNode } from "@babel/types"
 import "bootstrap/dist/css/bootstrap.min.css"
 import OrderHistory from "../order-history/OrderHistory"
 import "./CreateOrder.css"
+import "../auth/Welcome.css"
 import NumberFormat from 'react-number-format';
 
 
 const CreateOrder = props => {
-    const [setting, setSettings] = useState({})
+    const [store, setStore] = useState({})
     const [paymentList, setPaymentList] = useState([])
     const [denom, setDenom] = useState("")
     const [denomValue, setDenomValue] = useState("")
@@ -18,8 +19,10 @@ const CreateOrder = props => {
     const {isAuthenticated} = useSimpleAuth()
     // const searchTerm = useRef()
 
+    console.log("henlo")
     const getStores = () => {
-      fetch(`http://192.168.21.117:8000/stores/${props.store.id}`, {
+      console.log("HELLO", props.storeId)
+      fetch(`http://192.168.21.117:8000/stores/${props.storeId}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -29,22 +32,25 @@ const CreateOrder = props => {
       })
       .then(response => response.json())
       .then(response => {
-          setSettings(response)
+          setStore(response)
           orderAmount.current.value = response.vend_limit
       })
     }
 
     const getCompleteOrders = () => {
-      fetch(`http://192.168.21.117:8000/orders?merchant=1&complete=1`, {
-          "method": "GET",
-          "headers": {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
-          }
-      })
-      .then(response => response.json())
-      .then(setCompleteOrders)
+      console.log("store", store)
+      if (store.merchant) {
+        fetch(`http://192.168.21.117:8000/orders?merchant=${store.merchant.id}&complete=1`, {
+            "method": "GET",
+            "headers": {
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+              "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+            }
+        })
+        .then(response => response.json())
+        .then(setCompleteOrders)
+      }
     }
 
     const getPaymentList = () => {
@@ -64,25 +70,33 @@ const CreateOrder = props => {
 
     useEffect(() => {
       getStores()
-      getCompleteOrders()
       getPaymentList()
+      const interval = setInterval(() => {
+        getStores()
+      }, 1000);
+      return () => clearInterval(interval);
     }, [])
 
-    let vendAmount = props.store.vend_limit
+    useEffect(() => {
+      getCompleteOrders()
+    }, [store])
+
+    let vendAmount = store.vend_limit
 
     let checkDate = new Date()
     let earned = 0
     let vended = 0
     let completedOrders = 0
+    let amountLeft = 0
 
 
     completeOrders.map(order => {
       if (checkDate.toISOString().substring(0, 10) === order.time_complete.substring(0, 10))
       {
         vended += order.vend_amount
-        vendAmount = vendAmount - vended
         earned += 1
         completedOrders += 1
+        amountLeft = vendAmount - vended
       }
     })
 
@@ -110,19 +124,11 @@ const CreateOrder = props => {
           val = max;
         }
 
-        // if (money === true) {
-        //     if (val.length === 3) {
-        //         if (Number(val) === 0) {
-        //             val = '001';
-        //         }
-        //     }
-        // }
-
         return val;
     }
 
     const moneyMax = (val) => {
-        let money = limit(val.substring(0, 3), vendAmount, true)
+        let money = limit(val.substring(0, 3), amountLeft, true)
 
         orderAmount.current.value = money
         return "$" + money
@@ -137,7 +143,7 @@ const CreateOrder = props => {
             "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
           },
           "body": JSON.stringify({
-            store_id: props.store.id,
+            store_id: store.id,
             payment_type: parseInt(paymentValue),
             customer_id: localStorage.getItem("id"),
             vend_amount: parseInt(orderAmount.current.value),
@@ -146,7 +152,9 @@ const CreateOrder = props => {
           })
       })
       .then(response => response.json())
-      .then(() => getCompleteOrders())
+      .then(() => {
+        props.history.push("/stores")
+      })
     }
 
     const checkOrder = () => {
@@ -186,7 +194,7 @@ const CreateOrder = props => {
         localTime = "0" + localTime
       }
 
-      if ((localTime + uniTime.substring(2)) > props.store.end_time || (localTime + uniTime.substring(2)) < props.store.start_time)
+      if ((localTime + uniTime.substring(2)) > store.end_time || (localTime + uniTime.substring(2)) < store.start_time)
       {
         alert("Sorry, this store is no longer taking orders.")
       }
@@ -236,8 +244,8 @@ const CreateOrder = props => {
       <>
           <section className="store-profile">
             <div className="edit-form">
-              <h1>Place Order at {props.store.store_name}</h1>
-              <h2>Amount Available: {vendAmount}</h2>
+              <h2>Place Order at {store.store_name}</h2>
+              <h3>Amount Available: ${amountLeft}</h3>
               <h4>Order Amount:</h4>
               <div className="vend-amount">
                 <NumberFormat placeholder="$000" onChange={checkValue} ref={orderAmount} className="form-vend" thousandSeparator={true} format={moneyMax} />

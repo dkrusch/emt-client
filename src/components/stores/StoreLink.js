@@ -39,8 +39,10 @@ const StoreLink = props => {
     return(
       <>
           <section className="incoming-orders">
-            <div>{props.store.store_name}</div>
-            <div>{address}</div>
+            <div className="stores-details">
+              <div>{props.store.store_name}</div>
+              <div>{address}</div>
+            </div>
             <Link className="nav-link nav-color" to={`/createorder/${props.store.id}`}>
                 <button type="submit">Create Order</button>
             </Link>

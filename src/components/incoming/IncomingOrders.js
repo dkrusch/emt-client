@@ -25,7 +25,6 @@ const IncomingOrders = props => {
 
     console.log("key", props.id)
     console.log("date", new Date().toISOString())
-    let thing = 20
     return(
       <>
           <section className="incoming-orders">
