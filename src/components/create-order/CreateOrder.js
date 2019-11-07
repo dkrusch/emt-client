@@ -38,16 +38,19 @@ const CreateOrder = props => {
     }
 
     const getCompleteOrders = () => {
-      fetch(`http://192.168.21.117:8000/orders?merchant=1&complete=1`, {
-          "method": "GET",
-          "headers": {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
-          }
-      })
-      .then(response => response.json())
-      .then(setCompleteOrders)
+      console.log("store", store)
+      if (store.merchant) {
+        fetch(`http://192.168.21.117:8000/orders?merchant=${store.merchant.id}&complete=1`, {
+            "method": "GET",
+            "headers": {
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+              "Authorization": `Token ${localStorage.getItem("bangazon_token")}`
+            }
+        })
+        .then(response => response.json())
+        .then(setCompleteOrders)
+      }
     }
 
     const getPaymentList = () => {
@@ -67,9 +70,12 @@ const CreateOrder = props => {
 
     useEffect(() => {
       getStores()
-      getCompleteOrders()
       getPaymentList()
     }, [])
+
+    useEffect(() => {
+      getCompleteOrders()
+    }, [store])
 
     let vendAmount = store.vend_limit
 
@@ -77,15 +83,16 @@ const CreateOrder = props => {
     let earned = 0
     let vended = 0
     let completedOrders = 0
+    let amountLeft = 0
 
 
     completeOrders.map(order => {
       if (checkDate.toISOString().substring(0, 10) === order.time_complete.substring(0, 10))
       {
         vended += order.vend_amount
-        vendAmount = vendAmount - vended
         earned += 1
         completedOrders += 1
+        amountLeft = vendAmount - vended
       }
     })
 
@@ -117,7 +124,7 @@ const CreateOrder = props => {
     }
 
     const moneyMax = (val) => {
-        let money = limit(val.substring(0, 3), vendAmount, true)
+        let money = limit(val.substring(0, 3), amountLeft, true)
 
         orderAmount.current.value = money
         return "$" + money
@@ -143,7 +150,6 @@ const CreateOrder = props => {
       .then(response => response.json())
       .then(() => {
         props.history.push("/stores")
-        getCompleteOrders()
       })
     }
 
@@ -235,7 +241,7 @@ const CreateOrder = props => {
           <section className="store-profile">
             <div className="edit-form">
               <h2>Place Order at {store.store_name}</h2>
-              <h3>Amount Available: ${vendAmount}</h3>
+              <h3>Amount Available: ${amountLeft}</h3>
               <h4>Order Amount:</h4>
               <div className="vend-amount">
                 <NumberFormat placeholder="$000" onChange={checkValue} ref={orderAmount} className="form-vend" thousandSeparator={true} format={moneyMax} />

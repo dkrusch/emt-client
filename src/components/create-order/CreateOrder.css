@@ -1,6 +1,6 @@
   .dropdown {
       display: block;
-      width: 70%;
+      width: 80%;
       padding: .375rem .75rem;
       font-size: 1rem;
       font-weight: 400;
@@ -16,7 +16,7 @@
 
   .dropdown:focus {
     display: block;
-    width: 70%;
+    width: 80%;
     height: calc(1.5em + .75rem + 2px);
     padding: .375rem .75rem;
     font-size: 1rem;
