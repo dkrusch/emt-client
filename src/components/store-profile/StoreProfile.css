@@ -27,7 +27,7 @@ html, body, #root {
 
 .incoming {
   flex-direction: column;
-  width: 30%;
+  width: 100%;
   /* margin: 5px; */
 }
 
