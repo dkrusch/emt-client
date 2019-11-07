@@ -14,7 +14,7 @@ html, body, #root {
 .store-profile {
   display: flex;
   flex-direction: row;
-  height: 100%;
+  height: 92.5%;
 }
 
 /* .list-form {
@@ -192,4 +192,11 @@ html, body, #root {
 .add-form {
   margin-left: 15px;
   margin-top: 10px;
+}
+
+.complete-orders {
+    margin-top: 10px;
+    flex-direction: column;
+    width: 30%;
+    overflow: scroll;
 }

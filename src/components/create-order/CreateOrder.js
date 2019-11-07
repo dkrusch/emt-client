@@ -71,6 +71,10 @@ const CreateOrder = props => {
     useEffect(() => {
       getStores()
       getPaymentList()
+      const interval = setInterval(() => {
+        getStores()
+      }, 1000);
+      return () => clearInterval(interval);
     }, [])
 
     useEffect(() => {

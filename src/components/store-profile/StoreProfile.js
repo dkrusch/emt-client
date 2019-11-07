@@ -185,7 +185,7 @@ const StoreProfile = props => {
               <button className="change-settings" onClick={changeSettings}>Submit Changes</button>
             </div>
             <div className="add-line"></div>
-            <div className="incoming">
+            <div className="complete-orders">
               <h4>Complete Orders: {completedOrders}</h4>
               {
                 component
