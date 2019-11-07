@@ -25,7 +25,7 @@ const RegisterMerchant = props => {
 
     const registerStore = () => {
         console.log("local", localStorage)
-        fetch(`http://192.168.21.117:8000/stores`, {
+        fetch(`http://192.168.1.4:8000/stores`, {
             "method": "POST",
             "headers": {
                 "Accept": "application/json",

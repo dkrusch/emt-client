@@ -25,7 +25,7 @@ const EditPayment = props => {
     }
 
     const getPayment = () => {
-        fetch(`http://192.168.21.117:8000/payments/${props.paymentId}`, {
+        fetch(`http://192.168.1.4:8000/payments/${props.paymentId}`, {
             "method": "GET",
             "headers": {
               "Accept": "application/json",
@@ -54,7 +54,7 @@ const EditPayment = props => {
 
     const addPayment = () => {
         console.log(merchantName)
-        fetch(`http://192.168.21.117:8000/payments/${payment.id}`, {
+        fetch(`http://192.168.1.4:8000/payments/${payment.id}`, {
             "method": "PUT",
             "headers": {
             "Accept": "application/json",

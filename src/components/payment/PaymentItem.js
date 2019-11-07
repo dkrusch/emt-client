@@ -7,7 +7,7 @@ import { Link } from "react-router-dom"
 
 const PaymentItem = props => {
     const deletePayment = () => {
-        fetch(`http://192.168.21.117:8000/payments/${props.payment.id}`, {
+        fetch(`http://192.168.1.4:8000/payments/${props.payment.id}`, {
             "method": "DELETE",
             "headers": {
             "Accept": "application/json",

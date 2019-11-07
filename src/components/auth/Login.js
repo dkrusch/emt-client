@@ -10,6 +10,7 @@ const Login = props => {
 
     // Simplistic handler for login submit
     const handleLogin = (e) => {
+        console.log("hello")
         e.preventDefault()
 
         /*

@@ -21,7 +21,7 @@ const CreateOrder = props => {
     console.log("henlo")
     const getStores = () => {
       console.log("HELLO", props.storeId)
-      fetch(`http://192.168.21.117:8000/stores/${props.storeId}`, {
+      fetch(`http://192.168.1.4:8000/stores/${props.storeId}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -37,7 +37,7 @@ const CreateOrder = props => {
     }
 
     const getCompleteOrders = () => {
-      fetch(`http://192.168.21.117:8000/orders?merchant=1&complete=1`, {
+      fetch(`http://192.168.1.4:8000/orders?merchant=1&complete=1`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -50,7 +50,7 @@ const CreateOrder = props => {
     }
 
     const getPaymentList = () => {
-      fetch(`http://192.168.21.117:8000/payments?customer=${localStorage.getItem("id")}`, {
+      fetch(`http://192.168.1.4:8000/payments?customer=${localStorage.getItem("id")}`, {
           "method": "GET",
           "headers": {
             "Accept": "application/json",
@@ -123,7 +123,7 @@ const CreateOrder = props => {
     }
 
     const createOrder = (denomin) => {
-      fetch(`http://192.168.21.117:8000/orders`, {
+      fetch(`http://192.168.1.4:8000/orders`, {
           "method": "POST",
           "headers": {
             "Accept": "application/json",
